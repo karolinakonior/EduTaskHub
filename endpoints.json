@@ -1,0 +1,78 @@
+{
+    "GET /api/teachers": {
+        "description": "Returns an array of all teachers",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "teachers" : [
+                {
+                    "teacher_id": 1,
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "email": "email1@gmail.com",
+                    "password": "password"
+                },
+                {
+                    "teacher_id": 2,
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "email": "email2@gmail.com",
+                    "password": "password"
+                }
+            ]
+        }
+    },
+    "GET /api/teachers/:teacher_id": {
+        "description": "Returns a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "teacher" : {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "email1@gmail.com",
+                "password": "password"
+            }
+        }
+    },
+    "PATCH /api/teachers/:teacher_id": {
+        "description": "Updates a single teacher",
+        "queries": [],
+        "exampleRequest": {
+            "teacher": {
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "newemail@gmail.com",
+                "password": "password"
+            }
+        },
+        "exampleResponse": {
+            "teacher" : {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "newemail@gmail.com",
+                "password": "password"
+            }
+        }
+    },
+    "POST /api/teachers": {
+        "description": "Creates a single teacher",
+        "queries": [],
+        "exampleRequest": {
+            "teacher": {
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "testEmail@gmail.com",
+                "password": "hashedPassword"
+            }
+        }
+    },
+    "DELETE /api/teachers/:teacher_id": {
+        "description": "Deletes a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
+    }
+}

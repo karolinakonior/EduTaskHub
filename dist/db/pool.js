@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const { Pool } = require("pg");
 const ENV = process.env.NODE_ENV || "test";
 require("dotenv").config({
