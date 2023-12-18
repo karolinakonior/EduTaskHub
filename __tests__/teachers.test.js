@@ -128,3 +128,54 @@ describe("PATCH /api/teachers/:teacher_id", () => {
             })
     })
 })
+
+describe("POST /api/teachers", () => {
+    test("201: responds with the new teacher object", () => {
+        return request(app)
+            .post("/api/teachers")
+            .send({ first_name: "John", last_name: "Smith", email: "testemail@gmail.com", password: "password" })
+            .expect(201)
+            .then(({ body: { teacher } }) => {
+                expect(teacher).toEqual({
+                    teacher_id: 6,
+                    first_name: "John",
+                    last_name: "Smith",
+                    email: "testemail@gmail.com",
+                    password: expect.any(String)
+            })
+            })
+    })
+    test("201: responds with the new teacher object when passed extra key", () => {
+        return request(app)
+            .post("/api/teachers")
+            .send({ first_name: "John", last_name: "Smith", email: "testemail@gmail.com", password: "password", extra: "extra" })
+            .expect(201)
+            .then(({ body: { teacher } }) => {
+                expect(teacher).toEqual({
+                    teacher_id: 6,
+                    first_name: "John",
+                    last_name: "Smith",
+                    email: "testemail@gmail.com",
+                    password: expect.any(String)
+                })
+            })
+    })
+    test("400: responds with an error message when passed an empty object", () => {
+        return request(app)
+            .post("/api/teachers")
+            .send({})
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+    test("400: responds with an error message when passed an invalid object", () => {
+        return request(app)
+            .post("/api/teachers")
+            .send({ first_name: "John", last_name: "Smith"})
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})

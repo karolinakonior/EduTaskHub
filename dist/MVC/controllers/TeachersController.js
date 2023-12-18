@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchTeachers, fetchTeacherById, patchTeacher } = require("../models/TeachersModel");
+const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher } = require("../models/TeachersModel");
 exports.getTeachers = (req, res, next) => {
     fetchTeachers()
         .then((teachers) => {
@@ -22,6 +22,15 @@ exports.patchTeacherById = (req, res, next) => {
     patchTeacher(teacher_id, req.body)
         .then((teacher) => {
         res.status(200).send({ teacher });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.postTeacher = (req, res, next) => {
+    postNewTeacher(req.body)
+        .then((teacher) => {
+        res.status(201).send({ teacher });
     })
         .catch((err) => {
         next(err);

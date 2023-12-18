@@ -24,10 +24,9 @@ export const seed = ({ teachersData }: Data) => {
     .then(() => {
         const formattedTeachersData = format(
             `INSERT INTO teachers
-            (teacher_id, first_name, last_name, email, password)
+            (first_name, last_name, email, password)
             VALUES %L RETURNING *;`,
             teachersData.teachers.map((teacher: Teacher) => [
-                teacher.teacher_id,
                 teacher.first_name,
                 teacher.last_name,
                 teacher.email,

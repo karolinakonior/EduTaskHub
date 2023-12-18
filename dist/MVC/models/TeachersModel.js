@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt = require("bcrypt");
 const db = require("../../../dist/db/pool.js");
 exports.fetchTeachers = () => {
     return db.query(`SELECT * FROM teachers;`)
@@ -28,6 +29,26 @@ exports.patchTeacher = (teacher_id, teacher) => {
         if (rows.length === 0) {
             return Promise.reject({ status: 404, msg: "Teacher not found" });
         }
+        return rows[0];
+    });
+};
+exports.postNewTeacher = (teacher) => {
+    if (!teacher.first_name ||
+        !teacher.last_name ||
+        !teacher.email ||
+        !teacher.password) {
+        return Promise.reject({ status: 400, msg: "Bad request" });
+    }
+    return bcrypt
+        .genSalt(10)
+        .then((response) => {
+        const hashedPassword = bcrypt.hash(teacher.password, response);
+        return hashedPassword;
+    })
+        .then((hashedPassword) => {
+        return db.query(`INSERT INTO teachers (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *;`, [teacher.first_name, teacher.last_name, teacher.email, hashedPassword]);
+    })
+        .then(({ rows }) => {
         return rows[0];
     });
 };

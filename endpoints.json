@@ -56,5 +56,17 @@
                 "password": "password"
             }
         }
+    },
+    "POST /api/teachers": {
+        "description": "Creates a single teacher",
+        "queries": [],
+        "exampleRequest": {
+            "teacher": {
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "testEmail@gmail.com",
+                "password": "hashedPassword"
+            }
+        }
     }
 }
