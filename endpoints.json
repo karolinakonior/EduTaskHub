@@ -34,5 +34,27 @@
                 "email": "email1@gmail.com",
                 "password": "password"
             }
-        }}
+        }
+    },
+    "PATCH /api/teachers/:teacher_id": {
+        "description": "Updates a single teacher",
+        "queries": [],
+        "exampleRequest": {
+            "teacher": {
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "newemail@gmail.com",
+                "password": "password"
+            }
+        },
+        "exampleResponse": {
+            "teacher" : {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "newemail@gmail.com",
+                "password": "password"
+            }
+        }
+    }
 }
