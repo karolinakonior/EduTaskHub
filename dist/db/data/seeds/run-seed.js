@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const testData = require("../test-data/index");
 const { seed } = require("./seed");
 const db = require("../../pool");

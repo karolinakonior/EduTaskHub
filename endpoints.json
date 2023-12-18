@@ -1,0 +1,25 @@
+{
+    "GET /api/teachers": {
+        "description": "Returns an array of all teachers",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "teachers" : [
+                {
+                    "teacher_id": 1,
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "email": "email1@gmail.com",
+                    "password": "password"
+                },
+                {
+                    "teacher_id": 2,
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "email": "email2@gmail.com",
+                    "password": "password"
+                }
+            ]
+        }
+    }
+}

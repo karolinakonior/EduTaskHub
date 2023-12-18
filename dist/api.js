@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
+const api_router_1 = require("./MVC/routers/api-router");
+const express = require("express");
+const cors = require("cors");
+exports.app = express();
+exports.app.use(cors());
+exports.app.use(express.json());
+exports.app.use("/api", api_router_1.apiRouter);
