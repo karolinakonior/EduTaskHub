@@ -179,3 +179,19 @@ describe("POST /api/teachers", () => {
             })
     })
 })
+
+describe("DELETE /api/teachers/:teacher_id", () => {
+    test("204: responds with no content", () => {
+        return request(app)
+            .delete("/api/teachers/1")
+            .expect(204)
+    })
+    test("404: responds with an error message when passed a non-existent teacher_id", () => {
+        return request(app)
+            .delete("/api/teachers/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Teacher not found")
+            })
+    })
+})

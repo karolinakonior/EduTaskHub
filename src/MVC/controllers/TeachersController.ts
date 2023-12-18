@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Teacher } from "../../db/data/test-data/teachers";
-const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher } = require("../models/TeachersModel");
+const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher } = require("../models/TeachersModel");
 
 
 exports.getTeachers = (req: Request, res: Response, next: NextFunction) => {
@@ -36,6 +36,20 @@ exports.postTeacher = (req: Request, res: Response, next: NextFunction) => {
     postNewTeacher(req.body)
     .then((teacher: Teacher) => {
         res.status(201).send({ teacher })
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.deleteTeacherById = (req: Request, res: Response, next: NextFunction) => {
+    const { teacher_id } = req.params;
+    return fetchTeacherById(teacher_id)
+    .then(() => {
+        deleteTeacher(teacher_id)
+    })
+    .then(() => {
+        res.sendStatus(204);
     })
     .catch((err: Error) => {
         next(err);

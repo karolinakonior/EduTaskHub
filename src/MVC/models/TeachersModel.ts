@@ -65,3 +65,7 @@ exports.postNewTeacher = (teacher: Teacher) => {
         return rows[0];
     })
 }
+
+exports.deleteTeacher = (teacher_id: number) => {
+    return db.query(`DELETE FROM teachers WHERE teacher_id = $1;`, [teacher_id])
+}
