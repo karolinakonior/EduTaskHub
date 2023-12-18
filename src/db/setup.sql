@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS eth_test;
+
+CREATE DATABASE eth_test;

@@ -1,0 +1,10 @@
+You are now connected to database "eth_test" as user "karolinakonior".
+ teacher_id | first_name | last_name |      email       | password 
+------------+------------+-----------+------------------+----------
+          1 | John       | Smith     | email1@gmail.com | password
+          2 | Jane       | Doe       | email2@gmail.com | password
+          3 | Bob        | Jones     | email3@gmail.com | password
+          4 | Mary       | Smith     | email4@gmail.com | password
+          5 | Joe        | Doe       | email5@gmail.com | password
+(5 rows)
+

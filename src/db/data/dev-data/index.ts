@@ -1,0 +1,1 @@
+exports.teachersData = require("./teachers")

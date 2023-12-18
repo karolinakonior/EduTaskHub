@@ -1,0 +1,29 @@
+{
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@types/node": "^20.10.5",
+    "@types/pg": "^8.10.9",
+    "@types/pg-promise": "^5.4.3",
+    "dotenv": "^16.3.1",
+    "jest": "^29.7.0",
+    "node": "^21.2.0",
+    "pg": "^8.11.3",
+    "pg-format": "^1.0.4",
+    "ts-node": "^10.9.2"
+  },
+  "name": "edutaskhub",
+  "description": "EduTaskHub is an open-source educational platform designed to simplify the process of distributing and marking coursework assignments for students and teachers. This platform aims to improve the efficiency of homework management and enhance collaboration within an educational environment.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand",
+    "setup-dbs": "psql -f ./src/db/setup.sql",
+    "dev": "node ./dist/api.js",
+    "seed": "node ./dist/db/data/seeds/run-seed.js",
+    "playground": "psql -f playground.sql > playground.txt"
+  },
+  "author": "",
+  "license": "ISC"
+}
