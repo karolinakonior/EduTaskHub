@@ -26,3 +26,36 @@ describe("GET /api/teachers", () => {
             })
     })
 })
+
+describe("GET /api/teachers/:teacher_id", () => {
+    test("200: responds with a teacher object", () => {
+        return request(app)
+            .get("/api/teachers/1")
+            .expect(200)
+            .then(({ body: { teacher } }) => {
+                expect(teacher).toEqual({
+                    teacher_id: 1,
+                    first_name: "John",
+                    last_name: "Smith",
+                    email: "email1@gmail.com",
+                    password: "password"
+                })
+            })
+    })
+    test("404: responds with an error message when passed a non-existent teacher_id", () => {
+        return request(app)
+            .get("/api/teachers/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Teacher not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid teacher_id", () => {
+        return request(app)
+            .get("/api/teachers/invalid")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})

@@ -21,5 +21,18 @@
                 }
             ]
         }
-    }
+    },
+    "GET /api/teachers/:teacher_id": {
+        "description": "Returns a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "teacher" : {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "email1@gmail.com",
+                "password": "password"
+            }
+        }}
 }
