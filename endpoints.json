@@ -74,5 +74,28 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/students": {
+        "description": "Returns an array of all students",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "students" : [
+                {
+                    "student_id": 1,
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "email": "student1@gmail.com",
+                    "password": "password"
+                },
+                {
+                    "student_id": 2,
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "email": "email2@gmail.com",
+                    "password": "password"
+                }
+            ]
     }
+}
 }
