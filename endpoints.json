@@ -67,7 +67,15 @@
                 "email": "testEmail@gmail.com",
                 "password": "hashedPassword"
             }
-        }
+        },
+        "exampleResponse": {
+            "teacher": {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "testEmail@gmail.com",
+                "password": "hashedPassword"
+            }
     },
     "DELETE /api/teachers/:teacher_id": {
         "description": "Deletes a single teacher",

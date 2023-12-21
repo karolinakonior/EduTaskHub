@@ -23,7 +23,7 @@ exports.fetchStudentById = (student_id: number) => {
 
 exports.postSingleUser = (student: Student) => {
     if(!student.first_name || !student.last_name || !student.email || !student.password) return Promise.reject({ status: 400, msg: "Bad request" })
-    
+
     return bcrypt
     .genSalt(10)
     .then((response: string) => {
@@ -33,6 +33,13 @@ exports.postSingleUser = (student: Student) => {
     .then((hashedPassword: string) => {
         return db.query(`INSERT INTO students (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *;`, [student.first_name, student.last_name, student.email, hashedPassword])
     })
+    .then((result: StudentsProps) => {
+        return result.rows[0];
+    })
+}
+
+exports.patchStudent = (student_id: number, student: Student) => {
+    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE student_id = $5 RETURNING *;`, [student.first_name, student.last_name, student.email, student.password, student_id])
     .then((result: StudentsProps) => {
         return result.rows[0];
     })

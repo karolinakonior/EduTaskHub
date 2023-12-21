@@ -121,3 +121,83 @@ describe(" POST /api/students", () => {
             })
     })
 })
+
+describe(" PATCH /api/students/:student_id", () => {
+    test("200: responds with the updated student object", () => {
+        return request(app)
+            .patch("/api/students/1")
+            .send({
+                first_name: "Updated",
+                last_name: "Student",
+                email: "student1@gmail.com",
+                password: "password"
+            })
+            .expect(200)
+            .then(({ body: { student } }) => {
+                expect(student.student_id).toBe(1);
+                expect(student.first_name).toBe("Updated");
+                expect(student.last_name).toBe("Student");
+                expect(student.email).toBe("student1@gmail.com")
+                expect(student.password).toBe("password")
+         })
+    })
+    test("200: responds with the updated student object when passed a student object with extra keys", () => {
+        return request(app)
+            .patch("/api/students/1")
+            .send({
+                first_name: "Updated",
+                last_name: "Student",
+                email: "student1@gmail.com",
+                password: "password",
+                extra: "key"
+            })
+            .expect(200)
+            .then(({ body: { student } }) => {
+                expect(student.student_id).toBe(1);
+                expect(student.first_name).toBe("Updated");
+                expect(student.last_name).toBe("Student");
+                expect(student.email).toBe("student1@gmail.com")
+                expect(student.password).toBe("password")
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .patch("/api/students/100")
+            .send({
+                first_name: "Updated",
+                last_name: "Student",
+                email: "student1@gmail.com",
+                password: "password"
+            })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid student_id", () => {
+        return request(app)
+            .patch("/api/students/invalid")
+            .send({
+                first_name: "Updated",
+                last_name: "Student",
+                email: "student1@gmail.com",
+                password: "password"
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+    test("400: responds with an error message when passed an invalid student object", () => {
+        return request(app)
+            .patch("/api/students/1")
+            .send({
+                first_name: "Updated",
+                last_name: "Student",
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})

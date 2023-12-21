@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
 
 exports.getStudents = (req: Request, res: Response, next: NextFunction) => {
@@ -36,6 +36,19 @@ exports.postStudent = (req: Request, res: Response, next: NextFunction) => {
     })
     .then((student: Student) => {
         res.status(201).send({ student });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.patchStudentById = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return patchStudent(req.params.student_id, req.body)
+    })
+    .then((student: Student) => {
+        res.status(200).send({ student });
     })
     .catch((err: Error) => {
         next(err);

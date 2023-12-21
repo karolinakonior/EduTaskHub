@@ -32,3 +32,9 @@ exports.postSingleUser = (student) => {
         return result.rows[0];
     });
 };
+exports.patchStudent = (student_id, student) => {
+    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE student_id = $5 RETURNING *;`, [student.first_name, student.last_name, student.email, student.password, student_id])
+        .then((result) => {
+        return result.rows[0];
+    });
+};
