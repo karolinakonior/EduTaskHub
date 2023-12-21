@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { Teacher } from "../../db/data/test-data/teachers";
-const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher } = require("../models/TeachersModel");
+const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher, fetchTeachersSubject } = require("../models/TeachersModel");
 
+type SubjectProps = {
+    subject: string,
+    teacher_id: number,
+    subject_id: number
+}
 
 exports.getTeachers = (req: Request, res: Response, next: NextFunction) => {
     fetchTeachers()
@@ -50,6 +55,20 @@ exports.deleteTeacherById = (req: Request, res: Response, next: NextFunction) =>
     })
     .then(() => {
         res.sendStatus(204);
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getTeachersSubject = (req: Request, res: Response, next: NextFunction) => {
+    const { teacher_id } = req.params;
+    fetchTeacherById(teacher_id)
+    .then(() => {
+        return fetchTeachersSubject(teacher_id)
+    })
+    .then((subject: SubjectProps) => {
+        res.status(200).send(subject)
     })
     .catch((err: Error) => {
         next(err);

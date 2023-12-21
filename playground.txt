@@ -26,3 +26,10 @@ You are now connected to database "eth_test" as user "karolinakonior".
           5 | English
 (5 rows)
 
+ subject_id | teacher_id 
+------------+------------
+          1 |          1
+          2 |          2
+          3 |          3
+(3 rows)
+

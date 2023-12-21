@@ -195,3 +195,31 @@ describe("DELETE /api/teachers/:teacher_id", () => {
             })
     })
 })
+
+describe("GET /api/teachers/:teacher_id/subjects", () => {
+    test("200: responds with an array of subject objects", () => {
+        return request(app)
+            .get("/api/teachers/1/subjects")
+            .expect(200)
+            .then(({body}) => {
+                expect(body).toHaveLength(1);
+                expect(body).toEqual([ { subject_id: 1, teacher_id: 1, subject_name: 'Biology' } ])
+            })
+    })
+    test("404: responds with an error message when passed a non-existent teacher_id", () => {
+        return request(app)
+            .get("/api/teachers/100/subjects")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Teacher not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid teacher_id", () => {
+        return request(app)
+            .get("/api/teachers/invalid/subjects")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})

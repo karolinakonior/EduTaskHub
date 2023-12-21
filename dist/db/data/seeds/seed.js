@@ -3,11 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const db = require("../../pool");
 const format = require("pg-format");
-const seed = ({ teachersData, studentsData, subjectsData }) => {
+const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData }) => {
     return db
-        .query(`DROP TABLE IF EXISTS subjects CASCADE;`)
+        .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
         .then(() => {
-        db.query(`DROP TABLE IF EXISTS students CASCADE;`);
+        return db.query(`DROP TABLE IF EXISTS subjects CASCADE;`);
+    })
+        .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students CASCADE;`);
     })
         .then(() => {
         return db.query(`DROP TABLE IF EXISTS teachers CASCADE;`);
@@ -34,6 +37,12 @@ const seed = ({ teachersData, studentsData, subjectsData }) => {
         return db.query(`CREATE TABLE subjects (
             subject_id SERIAL PRIMARY KEY,
             subject_name VARCHAR(255) NOT NULL
+            );`);
+    })
+        .then(() => {
+        return db.query(`CREATE TABLE teachers_subjects (
+            subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE,
+            teacher_id INT REFERENCES teachers(teacher_id) ON DELETE CASCADE
             );`);
     })
         .then(() => {
@@ -65,6 +74,15 @@ const seed = ({ teachersData, studentsData, subjectsData }) => {
             subject.subject_name
         ]));
         return db.query(formattedSubjectsData);
+    })
+        .then(() => {
+        const formattedTeachersSubjectsData = format(`INSERT INTO teachers_subjects
+            (subject_id, teacher_id)
+            VALUES %L RETURNING *;`, teachersSubjectsData.teachersSubjects.map((teacherSubject) => [
+            teacherSubject.subject_id,
+            teacherSubject.teacher_id
+        ]));
+        return db.query(formattedTeachersSubjectsData);
     });
 };
 exports.seed = seed;

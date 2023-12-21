@@ -55,3 +55,9 @@ exports.postNewTeacher = (teacher) => {
 exports.deleteTeacher = (teacher_id) => {
     return db.query(`DELETE FROM teachers WHERE teacher_id = $1;`, [teacher_id]);
 };
+exports.fetchTeachersSubject = (teacher_id) => {
+    return db.query(`SELECT * FROM teachers_subjects LEFT JOIN subjects ON teachers_subjects.subject_id = subjects.subject_id WHERE teacher_id = $1;`, [teacher_id])
+        .then(({ rows }) => {
+        return rows;
+    });
+};

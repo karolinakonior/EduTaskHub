@@ -151,5 +151,24 @@
                 }
             ]
         }
+    },
+    "GET /api/teachers/:teacher_id/subjects": {
+        "description": "Returns an array of all subjects for a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math",
+                    "teacher_id": 1
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science",
+                    "teacher_id": 3
+                }
+            ]
+        }
     }
 }
