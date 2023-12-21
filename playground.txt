@@ -17,3 +17,12 @@ You are now connected to database "eth_test" as user "karolinakonior".
           5 | Joe        | Adamson   | student5@gmail.com | password
 (5 rows)
 
+ subject_id | subject_name 
+------------+--------------
+          1 | Biology
+          2 | Chemistry
+          3 | Physics
+          4 | Maths
+          5 | English
+(5 rows)
+

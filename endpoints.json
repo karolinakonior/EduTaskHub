@@ -134,5 +134,22 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/subjects": {
+        "description": "Returns an array of all subjects",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math"
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science"
+                }
+            ]
+        }
     }
 }

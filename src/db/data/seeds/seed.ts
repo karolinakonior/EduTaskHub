@@ -1,5 +1,6 @@
 import { Teacher } from "../test-data/teachers"
 import { Student } from "../test-data/students"
+import { Subject } from "../test-data/subjects"
 
 const db = require("../../pool");
 const format = require("pg-format");
@@ -11,11 +12,17 @@ type Data = {
     studentsData: {
         students: Student[]
     }
+    subjectsData: {
+        subjects: Subject[]
+    }
 }
 
-export const seed = ({ teachersData, studentsData }: Data) => {
+export const seed = ({ teachersData, studentsData, subjectsData }: Data) => {
     return db
-    .query(`DROP TABLE IF EXISTS students CASCADE;`)
+    .query(`DROP TABLE IF EXISTS subjects CASCADE;`)
+    .then(() => {
+        db.query(`DROP TABLE IF EXISTS students CASCADE;`)
+    })
     .then(() => {
         return db.query(`DROP TABLE IF EXISTS teachers CASCADE;`)
     })
@@ -35,6 +42,12 @@ export const seed = ({ teachersData, studentsData }: Data) => {
             last_name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL
+            );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE subjects (
+            subject_id SERIAL PRIMARY KEY,
+            subject_name VARCHAR(255) NOT NULL
             );`)
     })
     .then(() => {
@@ -64,5 +77,16 @@ export const seed = ({ teachersData, studentsData }: Data) => {
             ])
         )
         return db.query(formattedStudentsData)
+    })
+    .then(() => {
+        const formattedSubjectsData = format(
+            `INSERT INTO subjects
+            (subject_name)
+            VALUES %L RETURNING *;`,
+            subjectsData.subjects.map((subject: Subject) => [
+                subject.subject_name
+            ])
+        )
+        return db.query(formattedSubjectsData);
     })
 }

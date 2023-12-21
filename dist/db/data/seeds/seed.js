@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const db = require("../../pool");
 const format = require("pg-format");
-const seed = ({ teachersData, studentsData }) => {
+const seed = ({ teachersData, studentsData, subjectsData }) => {
     return db
-        .query(`DROP TABLE IF EXISTS students CASCADE;`)
+        .query(`DROP TABLE IF EXISTS subjects CASCADE;`)
+        .then(() => {
+        db.query(`DROP TABLE IF EXISTS students CASCADE;`);
+    })
         .then(() => {
         return db.query(`DROP TABLE IF EXISTS teachers CASCADE;`);
     })
@@ -25,6 +28,12 @@ const seed = ({ teachersData, studentsData }) => {
             last_name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL
+            );`);
+    })
+        .then(() => {
+        return db.query(`CREATE TABLE subjects (
+            subject_id SERIAL PRIMARY KEY,
+            subject_name VARCHAR(255) NOT NULL
             );`);
     })
         .then(() => {
@@ -48,6 +57,14 @@ const seed = ({ teachersData, studentsData }) => {
             student.password
         ]));
         return db.query(formattedStudentsData);
+    })
+        .then(() => {
+        const formattedSubjectsData = format(`INSERT INTO subjects
+            (subject_name)
+            VALUES %L RETURNING *;`, subjectsData.subjects.map((subject) => [
+            subject.subject_name
+        ]));
+        return db.query(formattedSubjectsData);
     });
 };
 exports.seed = seed;
