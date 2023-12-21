@@ -8,3 +8,12 @@ You are now connected to database "eth_test" as user "karolinakonior".
           5 | Joe        | Doe       | email5@gmail.com | password
 (5 rows)
 
+ student_id | first_name | last_name |       email        | password 
+------------+------------+-----------+--------------------+----------
+          1 | Kayleigh   | Smith     | student1@gmail.com | password
+          2 | Jane       | Sutton    | student2@gmail.com | password
+          3 | Bob        | Jones     | student3@gmail.com | password
+          4 | Mary       | Smith     | student4@gmail.com | password
+          5 | Joe        | Adamson   | student5@gmail.com | password
+(5 rows)
+

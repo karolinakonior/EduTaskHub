@@ -67,10 +67,70 @@
                 "email": "testEmail@gmail.com",
                 "password": "hashedPassword"
             }
+        },
+        "exampleResponse": {
+            "teacher": {
+                "teacher_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "testEmail@gmail.com",
+                "password": "hashedPassword"
+            }
         }
     },
     "DELETE /api/teachers/:teacher_id": {
         "description": "Deletes a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
+    },
+    "GET /api/students": {
+        "description": "Returns an array of all students",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "students" : [
+                {
+                    "student_id": 1,
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "email": "student1@gmail.com",
+                    "password": "password"
+                },
+                {
+                    "student_id": 2,
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "email": "email2@gmail.com",
+                    "password": "password"
+                }
+            ]
+        }
+    },
+    "POST /api/students": {
+        "description": "Creates a single student",
+        "queries": [],
+        "exampleRequest": {
+            "student": {
+                "student_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "student1@gmail.com",
+                "password": "password"
+            }
+        },
+        "exampleResponse": {
+            "student": {
+                "student_id": 1,
+                "first_name": "John",
+                "last_name": "Smith",
+                "email": "student1@gmail.com",
+                "password": "password"
+            }
+        }
+    },
+    "DELETE /api/students/:student_id": {
+        "description": "Deletes a single student",
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
