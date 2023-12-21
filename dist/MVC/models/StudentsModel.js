@@ -38,3 +38,6 @@ exports.patchStudent = (student_id, student) => {
         return result.rows[0];
     });
 };
+exports.deleteStudent = (student_id) => {
+    return db.query(`DELETE FROM students WHERE student_id = $1;`, [student_id]);
+};

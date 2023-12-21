@@ -76,6 +76,7 @@
                 "email": "testEmail@gmail.com",
                 "password": "hashedPassword"
             }
+        }
     },
     "DELETE /api/teachers/:teacher_id": {
         "description": "Deletes a single teacher",
@@ -127,5 +128,11 @@
                 "password": "password"
             }
         }
+    },
+    "DELETE /api/students/:student_id": {
+        "description": "Deletes a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
     }
 }
