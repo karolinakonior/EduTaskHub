@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject } = require("../models/StudentsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -83,6 +83,30 @@ exports.postStudentSubjects = (req, res, next) => {
     })
         .then((subject) => {
         res.status(201).send({ subject });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.deleteStudentSubjectById = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentSubjects(req.params.student_id);
+    })
+        .then((subjects) => {
+        let doesSubjectExist = false;
+        subjects.map((subject) => {
+            if (subject.subject_id === Number(req.params.subject_id))
+                doesSubjectExist = true;
+        });
+        if (!doesSubjectExist)
+            return Promise.reject({ status: 404, msg: "Subject not found" });
+    })
+        .then(() => {
+        return deleteStudentSubject(req.params.student_id, req.params.subject_id);
+    })
+        .then(() => {
+        res.sendStatus(204);
     })
         .catch((err) => {
         next(err);

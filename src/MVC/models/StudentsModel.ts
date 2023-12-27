@@ -70,3 +70,7 @@ exports.postNewStudentSubject = (student_id: number, subject_name: string) => {
         return result.rows[0];
     })
 }
+
+exports.deleteStudentSubject = (student_id: number, subject_id: number) => {
+    return db.query(`DELETE FROM students_subjects WHERE student_id = $1 AND subject_id = $2;`, [student_id, subject_id])
+}
