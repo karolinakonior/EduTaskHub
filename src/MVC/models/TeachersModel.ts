@@ -1,4 +1,6 @@
 import { type Teacher } from "../../db/data/test-data/teachers"
+import { type Subject } from "../../db/data/test-data/subjects"
+const { fetchSubjects } = require("./SubjectsModel");
 const bcrypt = require("bcrypt");
 const db = require("../../../dist/db/pool.js");
 
@@ -74,5 +76,23 @@ exports.fetchTeachersSubject = (teacher_id: number) => {
     return db.query(`SELECT * FROM teachers_subjects LEFT JOIN subjects ON teachers_subjects.subject_id = subjects.subject_id WHERE teacher_id = $1;`, [teacher_id])
     .then(({ rows }: TeacherProps) => {
         return rows;
+    })
+}
+
+exports.postNewTeachersSubject = (teacher_id: number, subject_name: string) => {
+    let subject_id = 0;
+    return fetchSubjects()
+    .then((subjects: Subject[]) => {
+        return subjects.forEach((subject: Subject) => {
+            if(subject.subject_name === subject_name) {
+                subject_id = subject.subject_id;
+            }
+        })
+    })
+    .then(() => {
+        return db.query(`INSERT INTO teachers_subjects (teacher_id, subject_id) VALUES ($1, $2) RETURNING *;`, [teacher_id, subject_id])
+    })
+    .then(({ rows }: TeacherProps) => {
+        return rows[0];
     })
 }

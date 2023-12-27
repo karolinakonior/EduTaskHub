@@ -223,3 +223,66 @@ describe("GET /api/teachers/:teacher_id/subjects", () => {
             })
     })
 })
+
+describe("POST /api/teachers/:teacher_id/subjects", () => {
+    test("201: responds with the new subject object", () => {
+        return request(app)
+            .post("/api/teachers/1/subjects")
+            .send({ subject_name: "Chemistry" })
+            .expect(201)
+            .then(({ body }) => {
+                expect(body).toEqual({
+                    subject_id: 2,
+                    teacher_id: 1,
+                })
+            })
+    })
+    test("201: responds with the new subject object when passed extra key", () => {
+        return request(app)
+            .post("/api/teachers/1/subjects")
+            .send({ subject_name: "Chemistry", extra: "extra" })
+            .expect(201)
+            .then(({ body }) => {
+                expect(body).toEqual({
+                    subject_id: 2,
+                    teacher_id: 1,
+                })
+            })
+    })
+    test("404: responds with an error message when passed a non-existent teacher_id", () => {
+        return request(app)
+            .post("/api/teachers/100/subjects")
+            .send({ subject_name: "Chemistry" })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Teacher not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid teacher_id", () => {
+        return request(app)
+            .post("/api/teachers/invalid/subjects")
+            .send({ subject_name: "Chemistry" })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+    test("400: responds with an error message when passed an empty object", () => {
+        return request(app)
+            .post("/api/teachers/1/subjects")
+            .send({})
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+    test("400: responds with an error message when passed an invalid object", () => {
+        return request(app)
+            .post("/api/teachers/1/subjects")
+            .send({ subject_name: "Invalid subject", extra: "extra" })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})

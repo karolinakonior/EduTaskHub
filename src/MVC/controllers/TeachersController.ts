@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { Teacher } from "../../db/data/test-data/teachers";
-const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher, fetchTeachersSubject } = require("../models/TeachersModel");
+import { Subject } from "../../db/data/test-data/subjects";
+const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher, fetchTeachersSubject, postNewTeachersSubject } = require("../models/TeachersModel");
 
 type SubjectProps = {
     subject: string,
     teacher_id: number,
     subject_id: number
 }
+
 
 exports.getTeachers = (req: Request, res: Response, next: NextFunction) => {
     fetchTeachers()
@@ -69,6 +71,20 @@ exports.getTeachersSubject = (req: Request, res: Response, next: NextFunction) =
     })
     .then((subject: SubjectProps) => {
         res.status(200).send(subject)
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postTeachersSubject = (req: Request, res: Response, next: NextFunction) => {
+    const subject_name = req.body.subject_name;
+    fetchTeacherById(req.params.teacher_id)
+    .then(() => {
+        return postNewTeachersSubject(req.params.teacher_id, subject_name)
+    })
+    .then((subject: any) => {
+        res.status(201).send(subject)
     })
     .catch((err: Error) => {
         next(err);

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const { fetchSubjects } = require("./SubjectsModel");
 const bcrypt = require("bcrypt");
 const db = require("../../../dist/db/pool.js");
 exports.fetchTeachers = () => {
@@ -59,5 +60,22 @@ exports.fetchTeachersSubject = (teacher_id) => {
     return db.query(`SELECT * FROM teachers_subjects LEFT JOIN subjects ON teachers_subjects.subject_id = subjects.subject_id WHERE teacher_id = $1;`, [teacher_id])
         .then(({ rows }) => {
         return rows;
+    });
+};
+exports.postNewTeachersSubject = (teacher_id, subject_name) => {
+    let subject_id = 0;
+    return fetchSubjects()
+        .then((subjects) => {
+        return subjects.forEach((subject) => {
+            if (subject.subject_name === subject_name) {
+                subject_id = subject.subject_id;
+            }
+        });
+    })
+        .then(() => {
+        return db.query(`INSERT INTO teachers_subjects (teacher_id, subject_id) VALUES ($1, $2) RETURNING *;`, [teacher_id, subject_id]);
+    })
+        .then(({ rows }) => {
+        return rows[0];
     });
 };
