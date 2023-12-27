@@ -2,6 +2,7 @@ import { Teacher } from "../test-data/teachers"
 import { Student } from "../test-data/students"
 import { Subject } from "../test-data/subjects"
 import { TeacherSubject } from "../test-data/teachers-subjects"
+import { StudentSubject } from "../test-data/students-subjects"
 
 const db = require("../../pool");
 const format = require("pg-format");
@@ -18,13 +19,18 @@ type Data = {
     },
     teachersSubjectsData: {
         teachersSubjects: TeacherSubject[]
-    
+    },
+    studentsSubjectsData: {
+        studentsSubjects: StudentSubject[]
     }
 }
 
-export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData }: Data) => {
+export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData }: Data) => {
     return db
     .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students_subjects CASCADE;`)
+    })
     .then(() => {
         return db.query(`DROP TABLE IF EXISTS subjects CASCADE;`)
     })
@@ -62,6 +68,12 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
         return db.query(`CREATE TABLE teachers_subjects (
             subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE,
             teacher_id INT REFERENCES teachers(teacher_id) ON DELETE CASCADE
+            );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE students_subjects (
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
             );`)
     })
     .then(() => {
@@ -114,5 +126,17 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             ])
         )
         return db.query(formattedTeachersSubjectsData);
+    })
+    .then(() => {
+        const formattedStudentsSubjectsData = format(
+            `INSERT INTO students_subjects
+            (student_id, subject_id)
+            VALUES %L RETURNING *;`,
+            studentsSubjectsData.studentsSubjects.map((studentSubject: StudentSubject) => [
+                studentSubject.student_id,
+                studentSubject.subject_id
+            ])
+        )
+        return db.query(formattedStudentsSubjectsData);
     })
 }

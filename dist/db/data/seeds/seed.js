@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const db = require("../../pool");
 const format = require("pg-format");
-const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData }) => {
+const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData }) => {
     return db
         .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+        .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students_subjects CASCADE;`);
+    })
         .then(() => {
         return db.query(`DROP TABLE IF EXISTS subjects CASCADE;`);
     })
@@ -46,6 +49,12 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData }
             );`);
     })
         .then(() => {
+        return db.query(`CREATE TABLE students_subjects (
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
+            );`);
+    })
+        .then(() => {
         const formattedTeachersData = format(`INSERT INTO teachers
             (first_name, last_name, email, password)
             VALUES %L RETURNING *;`, teachersData.teachers.map((teacher) => [
@@ -83,6 +92,15 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData }
             teacherSubject.teacher_id
         ]));
         return db.query(formattedTeachersSubjectsData);
+    })
+        .then(() => {
+        const formattedStudentsSubjectsData = format(`INSERT INTO students_subjects
+            (student_id, subject_id)
+            VALUES %L RETURNING *;`, studentsSubjectsData.studentsSubjects.map((studentSubject) => [
+            studentSubject.student_id,
+            studentSubject.subject_id
+        ]));
+        return db.query(formattedStudentsSubjectsData);
     });
 };
 exports.seed = seed;
