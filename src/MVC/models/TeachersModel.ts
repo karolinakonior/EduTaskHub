@@ -96,3 +96,7 @@ exports.postNewTeachersSubject = (teacher_id: number, subject_name: string) => {
         return rows[0];
     })
 }
+
+exports.deleteSingleTeachersSubject = (teacher_id: number, subject_id: number) => {
+    return db.query(`DELETE FROM teachers_subjects WHERE teacher_id = $1 AND subject_id = $2;`, [teacher_id, subject_id])
+}

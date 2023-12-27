@@ -186,6 +186,12 @@
             }
         }
     },
+    "DELETE /api/teachers/:teacher_id/subjects/:subject_id": {
+        "description": "Deletes a single subject for a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
+    },
     "GET /api/students/:student_id/subjects": {
         "description": "Returns an array of all subjects for a single student",
         "queries": [],
