@@ -170,5 +170,22 @@
                 }
             ]
         }
+    },
+    "GET /api/students/:student_id/subjects": {
+        "description": "Returns an array of all subjects for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math"
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science"
+                }
+            ]
+        }
     }
 }

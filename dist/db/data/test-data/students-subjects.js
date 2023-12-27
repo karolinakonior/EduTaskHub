@@ -51,7 +51,7 @@ exports.studentsSubjects = [
         subject_id: 1
     },
     {
-        student_id: 5,
-        subject_id: 1
+        student_id: 4,
+        subject_id: 2
     }
 ];

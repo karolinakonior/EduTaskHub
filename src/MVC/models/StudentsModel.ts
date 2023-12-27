@@ -6,6 +6,13 @@ type StudentsProps = {
     rows: Student[]
 }
 
+type SubjectsProps = {
+    rows: {
+        subject_id: number,
+        subject_name: string
+    }[]
+}
+
 exports.fetchStudents = () => {
     return db.query(`SELECT * FROM students;`)
     .then((result: StudentsProps) => { 
@@ -47,4 +54,11 @@ exports.patchStudent = (student_id: number, student: Student) => {
 
 exports.deleteStudent = (student_id: number) => {
     return db.query(`DELETE FROM students WHERE student_id = $1;`, [student_id])
+}
+
+exports.fetchStudentSubjects = (student_id: number) => {
+    return db.query(`SELECT students_subjects.subject_id, subjects.subject_name FROM students_subjects LEFT JOIN subjects ON students_subjects.subject_id = subjects.subject_id WHERE student_id = $1;`, [student_id])
+    .then((result: SubjectsProps) => {
+        return result.rows;
+    })
 }

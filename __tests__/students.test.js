@@ -225,3 +225,42 @@ describe(" DELETE /api/students/:student_id", () => {
             })
     })
 })
+
+describe("GET /api/students/:student_id/subjects", () => {
+    test("200: responds with an array of subject objects", () => {
+        return request(app)
+            .get("/api/students/1/subjects")
+            .expect(200)
+            .then(({ body: { subjects } }) => {
+                expect(subjects).toHaveLength(5);
+                expect(subjects[0]).toEqual({
+                    subject_id: 1,
+                    subject_name: "Biology",
+                })
+            })
+    })
+    test("200: responds with an empty array when passed a student_id with no subjects", () => {
+        return request(app)
+            .get("/api/students/5/subjects")
+            .expect(200)
+            .then(({ body: { subjects } }) => {
+                expect(subjects).toEqual([]);
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .get("/api/students/100/subjects")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid student_id", () => {
+        return request(app)
+            .get("/api/students/invalid/subjects")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})
