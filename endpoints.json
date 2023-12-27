@@ -134,5 +134,98 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/subjects": {
+        "description": "Returns an array of all subjects",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math"
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science"
+                }
+            ]
+        }
+    },
+    "GET /api/teachers/:teacher_id/subjects": {
+        "description": "Returns an array of all subjects for a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math",
+                    "teacher_id": 1
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science",
+                    "teacher_id": 3
+                }
+            ]
+        }
+    },
+    "POST /api/teachers/:teacher_id/subjects": {
+        "description": "Creates a single subject for a single teacher",
+        "queries": [],
+        "exampleRequest": {
+            "subject": {
+                "subject_name": "Math"
+            }
+        },
+        "exampleResponse": {
+            "subject": {
+                "subject_id": 1,
+                "teacher_id": 1
+            }
+        }
+    },
+    "DELETE /api/teachers/:teacher_id/subjects/:subject_id": {
+        "description": "Deletes a single subject for a single teacher",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
+    },
+    "GET /api/students/:student_id/subjects": {
+        "description": "Returns an array of all subjects for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "subjects" : [
+                {
+                    "subject_id": 1,
+                    "subject_name": "Math"
+                },
+                {
+                    "subject_id": 2,
+                    "subject_name": "Science"
+                }
+            ]
+        }
+    },
+    "POST /api/students/:student_id/subjects": {
+        "description": "Creates a single subject for a single student",
+        "queries": [],
+        "exampleRequest": {
+                "subject_name": "Math"
+        },
+        "exampleResponse": {
+            "subject": {
+                "subject_id": 1,
+                "student_id": 1
+            }
+        }
+    },
+    "DELETE /api/students/:student_id/subjects/:subject_id": {
+        "description": "Deletes a single subject for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
     }
 }

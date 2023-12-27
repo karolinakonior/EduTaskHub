@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
+import { Subject } from "../../db/data/test-data/subjects";
 
 exports.getStudents = (req: Request, res: Response, next: NextFunction) => {
     fetchStudents()
@@ -59,6 +60,55 @@ exports.deleteStudentById = (req: Request, res: Response, next: NextFunction) =>
     fetchStudentById(req.params.student_id)
     .then(() => {
         deleteStudent(req.params.student_id)
+    })
+    .then(() => {
+        res.sendStatus(204);
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentSubjects = (req: Request, res: Response, next: NextFunction) => {
+    return fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentSubjects(req.params.student_id)
+    })
+    .then((subjects: Subject[]) => {
+        res.status(200).send({ subjects });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentSubjects = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return postNewStudentSubject(req.params.student_id, req.body.subject_name)
+    })
+    .then((subject: Subject) => {
+        res.status(201).send({ subject });
+    })
+    .catch((err: Error) => {  
+        next(err);
+    })
+}
+
+exports.deleteStudentSubjectById = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentSubjects(req.params.student_id)
+    })
+    .then((subjects: Subject[]) => {
+        let doesSubjectExist = false;
+        subjects.map((subject: Subject) => {
+            if(subject.subject_id === Number(req.params.subject_id)) doesSubjectExist = true;
+        })
+        if(!doesSubjectExist) return Promise.reject({ status: 404, msg: "Subject not found"})
+    })
+    .then(() => {
+        return deleteStudentSubject(req.params.student_id, req.params.subject_id)
     })
     .then(() => {
         res.sendStatus(204);

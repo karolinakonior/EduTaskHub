@@ -225,3 +225,116 @@ describe(" DELETE /api/students/:student_id", () => {
             })
     })
 })
+
+describe("GET /api/students/:student_id/subjects", () => {
+    test("200: responds with an array of subject objects", () => {
+        return request(app)
+            .get("/api/students/1/subjects")
+            .expect(200)
+            .then(({ body: { subjects } }) => {
+                expect(subjects).toHaveLength(5);
+                expect(subjects[0]).toEqual({
+                    subject_id: 1,
+                    subject_name: "Biology",
+                })
+            })
+    })
+    test("200: responds with an empty array when passed a student_id with no subjects", () => {
+        return request(app)
+            .get("/api/students/5/subjects")
+            .expect(200)
+            .then(({ body: { subjects } }) => {
+                expect(subjects).toEqual([]);
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .get("/api/students/100/subjects")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid student_id", () => {
+        return request(app)
+            .get("/api/students/invalid/subjects")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})
+
+describe("POST /api/students/:student_id/subjects", () => {
+    test("201: responds with the posted subject object", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: "Biology"
+            })
+            .expect(201)
+            .then(({ body: { subject} }) => {
+                expect(subject.student_id).toBe(3);
+                expect(subject.subject_id).toBe(1);
+            })
+    })
+    test("201: responds with the posted subject object when passed a subject object with extra keys", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: "Biology",
+                extra: "key"
+            })
+            .expect(201)
+            .then(({ body: { subject } }) => {
+                expect(subject.student_id).toBe(3);
+                expect(subject.subject_id).toBe(1);
+            })
+    })
+    test("400: responds with an error message when passed an invalid subject object", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Subject not found")
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .post("/api/students/100/subjects")
+            .send({
+                subject_name: "Biology"
+            })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+})
+
+describe("DELETE /api/students/:student_id/subjects/:subject_id", () => {
+    test("204: responds with no content", () => {
+        return request(app)
+            .delete("/api/students/1/subjects/1")
+            .expect(204)
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .delete("/api/students/100/subjects/1")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("404: responds with an error message when passed a non-existent subject_id", () => {
+        return request(app)
+            .delete("/api/students/1/subjects/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Subject not found")
+            })
+    })
+})

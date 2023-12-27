@@ -41,3 +41,20 @@ exports.patchStudent = (student_id, student) => {
 exports.deleteStudent = (student_id) => {
     return db.query(`DELETE FROM students WHERE student_id = $1;`, [student_id]);
 };
+exports.fetchStudentSubjects = (student_id) => {
+    return db.query(`SELECT students_subjects.subject_id, subjects.subject_name FROM students_subjects LEFT JOIN subjects ON students_subjects.subject_id = subjects.subject_id WHERE student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};
+exports.postNewStudentSubject = (student_id, subject_name) => {
+    return db.query(`INSERT INTO students_subjects (student_id, subject_id) VALUES ($1, (SELECT subject_id FROM subjects WHERE subject_name = $2)) RETURNING *;`, [student_id, subject_name])
+        .then((result) => {
+        if (typeof result.rows[0].subject_id !== "number")
+            return Promise.reject({ status: 400, msg: "Subject not found" });
+        return result.rows[0];
+    });
+};
+exports.deleteStudentSubject = (student_id, subject_id) => {
+    return db.query(`DELETE FROM students_subjects WHERE student_id = $1 AND subject_id = $2;`, [student_id, subject_id]);
+};
