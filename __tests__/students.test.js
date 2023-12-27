@@ -264,3 +264,53 @@ describe("GET /api/students/:student_id/subjects", () => {
             })
     })
 })
+
+describe("POST /api/students/:student_id/subjects", () => {
+    test("201: responds with the posted subject object", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: "Biology"
+            })
+            .expect(201)
+            .then(({ body: { subject} }) => {
+                expect(subject.student_id).toBe(3);
+                expect(subject.subject_id).toBe(1);
+            })
+    })
+    test("201: responds with the posted subject object when passed a subject object with extra keys", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: "Biology",
+                extra: "key"
+            })
+            .expect(201)
+            .then(({ body: { subject } }) => {
+                expect(subject.student_id).toBe(3);
+                expect(subject.subject_id).toBe(1);
+            })
+    })
+    test("400: responds with an error message when passed an invalid subject object", () => {
+        return request(app)
+            .post("/api/students/3/subjects")
+            .send({
+                subject_name: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Subject not found")
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .post("/api/students/100/subjects")
+            .send({
+                subject_name: "Biology"
+            })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+})

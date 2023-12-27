@@ -62,3 +62,11 @@ exports.fetchStudentSubjects = (student_id: number) => {
         return result.rows;
     })
 }
+
+exports.postNewStudentSubject = (student_id: number, subject_name: string) => {
+    return db.query(`INSERT INTO students_subjects (student_id, subject_id) VALUES ($1, (SELECT subject_id FROM subjects WHERE subject_name = $2)) RETURNING *;`, [student_id, subject_name])
+    .then((result: SubjectsProps) => {
+        if(typeof result.rows[0].subject_id !== "number") return Promise.reject({ status: 400, msg: "Subject not found" })
+        return result.rows[0];
+    })
+}

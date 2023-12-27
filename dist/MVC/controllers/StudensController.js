@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject } = require("../models/StudentsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -71,6 +71,18 @@ exports.getStudentSubjects = (req, res, next) => {
     })
         .then((subjects) => {
         res.status(200).send({ subjects });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.postStudentSubjects = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return postNewStudentSubject(req.params.student_id, req.body.subject_name);
+    })
+        .then((subject) => {
+        res.status(201).send({ subject });
     })
         .catch((err) => {
         next(err);

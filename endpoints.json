@@ -208,5 +208,18 @@
                 }
             ]
         }
+    },
+    "POST /api/students/:student_id/subjects": {
+        "description": "Creates a single subject for a single student",
+        "queries": [],
+        "exampleRequest": {
+                "subject_name": "Math"
+        },
+        "exampleResponse": {
+            "subject": {
+                "subject_id": 1,
+                "student_id": 1
+            }
+        }
     }
 }

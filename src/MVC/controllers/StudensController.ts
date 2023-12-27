@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
+import { Subject } from "../../db/data/test-data/subjects";
 
 exports.getStudents = (req: Request, res: Response, next: NextFunction) => {
     fetchStudents()
@@ -73,10 +74,23 @@ exports.getStudentSubjects = (req: Request, res: Response, next: NextFunction) =
     .then(() => {
         return fetchStudentSubjects(req.params.student_id)
     })
-    .then((subjects: any) => {
+    .then((subjects: Subject[]) => {
         res.status(200).send({ subjects });
     })
     .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentSubjects = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return postNewStudentSubject(req.params.student_id, req.body.subject_name)
+    })
+    .then((subject: Subject) => {
+        res.status(201).send({ subject });
+    })
+    .catch((err: Error) => {  
         next(err);
     })
 }
