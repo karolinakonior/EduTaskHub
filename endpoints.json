@@ -227,5 +227,22 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/years": {
+        "description": "Returns an array of all years",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "years" : [
+                {
+                    "year_id": 1,
+                    "year": 12
+                },
+                {
+                    "year_id": 2,
+                    "year": 13
+                }
+            ]
+        }
     }
 }
