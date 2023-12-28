@@ -97,3 +97,7 @@ exports.postYear = (student_id: number, year: number) => {
         return result.rows[0];
     })
 }
+
+exports.deleteStudentYear = (student_id: number, year_id: number) => {
+    return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id])
+}

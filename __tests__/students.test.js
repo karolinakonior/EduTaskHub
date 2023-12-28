@@ -439,3 +439,27 @@ describe("POST /api/students/:student_id/year", () => {
             })
     })
 })
+
+describe("DELETE /api/students/:student_id/year/:year_id", () => {
+    test("204: responds with no content", () => {
+        return request(app)
+            .delete("/api/students/1/year/1")
+            .expect(204)
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .delete("/api/students/100/year/1")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("404: responds with an error message when passed a year_id not assigned to a student", () => {
+        return request(app)
+            .delete("/api/students/1/year/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Year not found")
+            })
+    })
+})

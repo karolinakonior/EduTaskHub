@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear } = require("../models/StudentsModel");
-const { fetchYears } = require("../models/YearsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -139,6 +138,30 @@ exports.postStudentYear = (req, res, next) => {
     })
         .then((year) => {
         res.status(201).send({ year });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.deleteStudentYearById = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
+        .then((years) => {
+        let doesYearExist = false;
+        years.map((year) => {
+            if (year.year_id === Number(req.params.year_id))
+                doesYearExist = true;
+        });
+        if (!doesYearExist)
+            return Promise.reject({ status: 404, msg: "Year not found" });
+    })
+        .then(() => {
+        return deleteStudentYear(req.params.student_id, req.params.year_id);
+    })
+        .then(() => {
+        res.sendStatus(204);
     })
         .catch((err) => {
         next(err);
