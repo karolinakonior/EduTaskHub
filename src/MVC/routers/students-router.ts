@@ -1,8 +1,8 @@
 export const studentsRouter = require("express").Router();
-const { getStudents, getStudentById, postStudent, patchStudentById, deleteStudentById, getStudentSubjects, postStudentSubjects, deleteStudentSubjectById, getStudentYear } = require("../controllers/StudensController")
+const { getStudents, getStudentById, postStudent, patchStudentById, deleteStudentById, getStudentSubjects, postStudentSubjects, deleteStudentSubjectById, getStudentYear, postStudentYear } = require("../controllers/StudensController")
 
 studentsRouter.route("/").get(getStudents).post(postStudent)
 studentsRouter.route("/:student_id").get(getStudentById).patch(patchStudentById).delete(deleteStudentById)
 studentsRouter.route("/:student_id/subjects").get(getStudentSubjects).post(postStudentSubjects)
 studentsRouter.route("/:student_id/subjects/:subject_id").delete(deleteStudentSubjectById)
-studentsRouter.route("/:student_id/year").get(getStudentYear)
+studentsRouter.route("/:student_id/year").get(getStudentYear).post(postStudentYear)

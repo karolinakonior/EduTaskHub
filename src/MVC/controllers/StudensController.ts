@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear } = require("../models/StudentsModel");
+const { fetchYears } = require("../models/YearsModel");
 import { Student } from "../../db/data/test-data/students";
 import { Subject } from "../../db/data/test-data/subjects";
 
@@ -125,8 +126,33 @@ exports.deleteStudentSubjectById = (req: Request, res: Response, next: NextFunct
 }
 
 exports.getStudentYear = (req: Request, res: Response, next: NextFunction) => {
-    fetchStudentYear(req.params.student_id)
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentYear(req.params.student_id)
+    })
     .then((year: YearProps[]) => {
         res.status(200).send({ year });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentYear = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentYear(req.params.student_id)
+    })
+    .then((years: YearProps[]) => {
+       if(years.length !== 0) return Promise.reject({ status: 400, msg: "Student already has a year" })
+    })
+    .then(() => {
+        return postYear(req.params.student_id, req.body.year)
+    })
+    .then((year: YearProps) => {
+        res.status(201).send({ year });
+    })
+    .catch((err: Error) => {
+        next(err);
     })
 }

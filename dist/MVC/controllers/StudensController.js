@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear } = require("../models/StudentsModel");
+const { fetchYears } = require("../models/YearsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -113,8 +114,33 @@ exports.deleteStudentSubjectById = (req, res, next) => {
     });
 };
 exports.getStudentYear = (req, res, next) => {
-    fetchStudentYear(req.params.student_id)
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
         .then((year) => {
         res.status(200).send({ year });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.postStudentYear = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
+        .then((years) => {
+        if (years.length !== 0)
+            return Promise.reject({ status: 400, msg: "Student already has a year" });
+    })
+        .then(() => {
+        return postYear(req.params.student_id, req.body.year);
+    })
+        .then((year) => {
+        res.status(201).send({ year });
+    })
+        .catch((err) => {
+        next(err);
     });
 };

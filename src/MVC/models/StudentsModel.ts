@@ -89,3 +89,11 @@ exports.fetchStudentYear = (student_id: number) => {
         return result.rows;
     })
 }
+
+exports.postYear = (student_id: number, year: number) => {
+    return db.query(`INSERT INTO students_year (student_id, year_id) VALUES ($1, (SELECT year_id FROM years WHERE year = $2)) RETURNING *;`, [student_id, year])
+    .then((result: YearProps) => {
+        if(typeof result.rows[0].year_id !== "number") return Promise.reject({ status: 400, msg: "Year not found" })
+        return result.rows[0];
+    })
+}

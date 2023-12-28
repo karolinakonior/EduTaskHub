@@ -256,5 +256,19 @@
                 "student_id": 1
             }
         }
+    },
+    "POST /api/students/:student_id/year": {
+        "description": "Creates a single year for a single student",
+        "queries": [],
+        "exampleRequest": {
+                "year": 12    
+        },
+        "exampleResponse": {
+            "year": {
+                "year_id": 1,
+                "year": 12,
+                "student_id": 1
+            }
+        }
     }
 }
