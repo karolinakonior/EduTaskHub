@@ -1,8 +1,10 @@
 import { Teacher } from "../test-data/teachers"
-import { Student } from "../test-data/students"
+import { Student, students } from "../test-data/students"
 import { Subject } from "../test-data/subjects"
 import { TeacherSubject } from "../test-data/teachers-subjects"
 import { StudentSubject } from "../test-data/students-subjects"
+import { Year } from "../test-data/year"
+import { StudentYear } from "../test-data/students-year"
 
 const db = require("../../pool");
 const format = require("pg-format");
@@ -22,12 +24,24 @@ type Data = {
     },
     studentsSubjectsData: {
         studentsSubjects: StudentSubject[]
+    },
+    yearsData: {
+        years: Year[]
+    }
+    studentsYearData: {
+        studentsYear: StudentYear[]
     }
 }
 
-export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData }: Data) => {
+export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData }: Data) => {
     return db
     .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students_year CASCADE;`)
+    })
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS years CASCADE;`)
+    })
     .then(() => {
         return db.query(`DROP TABLE IF EXISTS students_subjects CASCADE;`)
     })
@@ -75,6 +89,18 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
             subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
             );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE years (
+            year_id SERIAL PRIMARY KEY,
+            year INT NOT NULL
+            );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE students_year (
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            year_id INT REFERENCES years(year_id) ON DELETE CASCADE
+        );`)
     })
     .then(() => {
         const formattedTeachersData = format(
@@ -130,13 +156,36 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
     .then(() => {
         const formattedStudentsSubjectsData = format(
             `INSERT INTO students_subjects
-            (student_id, subject_id)
+            (subject_id, student_id)
             VALUES %L RETURNING *;`,
             studentsSubjectsData.studentsSubjects.map((studentSubject: StudentSubject) => [
-                studentSubject.student_id,
-                studentSubject.subject_id
+                studentSubject.subject_id,
+                studentSubject.student_id
             ])
         )
         return db.query(formattedStudentsSubjectsData);
+    })
+    .then(() => {
+        const formattedYearsData = format(
+            `INSERT INTO years
+            (year)
+            VALUES %L RETURNING *;`,
+            yearsData.years.map((year: Year) => [
+                year.year
+            ])
+        )
+        return db.query(formattedYearsData);
+    })
+    .then(() => {
+        const formattedStudentsYearData = format(
+            `INSERT INTO students_year
+            (student_id, year_id)
+            VALUES %L RETURNING *;`,
+            studentsYearData.studentsYear.map((studentYear: StudentYear) => [
+                studentYear.student_id,
+                studentYear.year_id
+            ])
+        )
+        return db.query(formattedStudentsYearData);
     })
 }

@@ -227,5 +227,54 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/years": {
+        "description": "Returns an array of all years",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "years" : [
+                {
+                    "year_id": 1,
+                    "year": 12
+                },
+                {
+                    "year_id": 2,
+                    "year": 13
+                }
+            ]
+        }
+    },
+    "GET /api/students/:student_id/year": {
+        "description": "Returns a single year for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "year" : {
+                "year_id": 1,
+                "year": 12,
+                "student_id": 1
+            }
+        }
+    },
+    "POST /api/students/:student_id/year": {
+        "description": "Creates a single year for a single student",
+        "queries": [],
+        "exampleRequest": {
+                "year": 12    
+        },
+        "exampleResponse": {
+            "year": {
+                "year_id": 1,
+                "year": 12,
+                "student_id": 1
+            }
+        }
+    },
+    "DELETE /api/students/:student_id/year/:year_id": {
+        "description": "Deletes a single year for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
     }
 }

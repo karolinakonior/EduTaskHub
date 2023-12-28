@@ -3,9 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const db = require("../../pool");
 const format = require("pg-format");
-const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData }) => {
+const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData }) => {
     return db
         .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+        .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students_year CASCADE;`);
+    })
+        .then(() => {
+        return db.query(`DROP TABLE IF EXISTS years CASCADE;`);
+    })
         .then(() => {
         return db.query(`DROP TABLE IF EXISTS students_subjects CASCADE;`);
     })
@@ -55,6 +61,18 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
             );`);
     })
         .then(() => {
+        return db.query(`CREATE TABLE years (
+            year_id SERIAL PRIMARY KEY,
+            year INT NOT NULL
+            );`);
+    })
+        .then(() => {
+        return db.query(`CREATE TABLE students_year (
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            year_id INT REFERENCES years(year_id) ON DELETE CASCADE
+        );`);
+    })
+        .then(() => {
         const formattedTeachersData = format(`INSERT INTO teachers
             (first_name, last_name, email, password)
             VALUES %L RETURNING *;`, teachersData.teachers.map((teacher) => [
@@ -95,12 +113,29 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         const formattedStudentsSubjectsData = format(`INSERT INTO students_subjects
-            (student_id, subject_id)
+            (subject_id, student_id)
             VALUES %L RETURNING *;`, studentsSubjectsData.studentsSubjects.map((studentSubject) => [
-            studentSubject.student_id,
-            studentSubject.subject_id
+            studentSubject.subject_id,
+            studentSubject.student_id
         ]));
         return db.query(formattedStudentsSubjectsData);
+    })
+        .then(() => {
+        const formattedYearsData = format(`INSERT INTO years
+            (year)
+            VALUES %L RETURNING *;`, yearsData.years.map((year) => [
+            year.year
+        ]));
+        return db.query(formattedYearsData);
+    })
+        .then(() => {
+        const formattedStudentsYearData = format(`INSERT INTO students_year
+            (student_id, year_id)
+            VALUES %L RETURNING *;`, studentsYearData.studentsYear.map((studentYear) => [
+            studentYear.student_id,
+            studentYear.year_id
+        ]));
+        return db.query(formattedStudentsYearData);
     });
 };
 exports.seed = seed;

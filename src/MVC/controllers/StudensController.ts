@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
 import { Subject } from "../../db/data/test-data/subjects";
+
+type YearProps = {
+    year: number,
+    year_id: number,
+    student_id: number
+}
 
 exports.getStudents = (req: Request, res: Response, next: NextFunction) => {
     fetchStudents()
@@ -112,6 +118,61 @@ exports.deleteStudentSubjectById = (req: Request, res: Response, next: NextFunct
     })
     .then(() => {
         res.sendStatus(204);
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentYear = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentYear(req.params.student_id)
+    })
+    .then((year: YearProps[]) => {
+        res.status(200).send({ year });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentYear = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentYear(req.params.student_id)
+    })
+    .then((years: YearProps[]) => {
+       if(years.length !== 0) return Promise.reject({ status: 400, msg: "Student already has a year" })
+    })
+    .then(() => {
+        return postYear(req.params.student_id, req.body.year)
+    })
+    .then((year: YearProps) => {
+        res.status(201).send({ year });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.deleteStudentYearById = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentYear(req.params.student_id)
+    })
+    .then((years: YearProps[]) => {
+        let doesYearExist = false;
+        years.map((year: YearProps) => {
+            if(year.year_id === Number(req.params.year_id)) doesYearExist = true;
+        })
+        if(!doesYearExist) return Promise.reject({ status: 404, msg: "Year not found"})
+    })
+    .then(() => {
+       return deleteStudentYear(req.params.student_id, req.params.year_id)
+    })
+    .then(() => {
+        res.sendStatus(204)
     })
     .catch((err: Error) => {
         next(err);

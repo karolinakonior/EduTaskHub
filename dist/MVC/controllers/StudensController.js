@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -104,6 +104,61 @@ exports.deleteStudentSubjectById = (req, res, next) => {
     })
         .then(() => {
         return deleteStudentSubject(req.params.student_id, req.params.subject_id);
+    })
+        .then(() => {
+        res.sendStatus(204);
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.getStudentYear = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
+        .then((year) => {
+        res.status(200).send({ year });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.postStudentYear = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
+        .then((years) => {
+        if (years.length !== 0)
+            return Promise.reject({ status: 400, msg: "Student already has a year" });
+    })
+        .then(() => {
+        return postYear(req.params.student_id, req.body.year);
+    })
+        .then((year) => {
+        res.status(201).send({ year });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.deleteStudentYearById = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentYear(req.params.student_id);
+    })
+        .then((years) => {
+        let doesYearExist = false;
+        years.map((year) => {
+            if (year.year_id === Number(req.params.year_id))
+                doesYearExist = true;
+        });
+        if (!doesYearExist)
+            return Promise.reject({ status: 404, msg: "Year not found" });
+    })
+        .then(() => {
+        return deleteStudentYear(req.params.student_id, req.params.year_id);
     })
         .then(() => {
         res.sendStatus(204);

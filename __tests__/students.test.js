@@ -338,3 +338,128 @@ describe("DELETE /api/students/:student_id/subjects/:subject_id", () => {
             })
     })
 })
+
+describe("GET /api/students/:student_id/year", () => {
+    test("200: responds with an array of year objects", () => {
+        return request(app)
+            .get("/api/students/1/year")
+            .expect(200)
+            .then(({ body: { year } }) => {
+                expect(year).toHaveLength(1);
+                expect(year[0]).toEqual({
+                    year_id: 1,
+                    year: 12,
+                    student_id: 1
+                })
+            })
+    })
+    test("200: responds with an empty array when passed a student_id with no years", () => {
+        return request(app)
+            .get("/api/students/5/year")
+            .expect(200)
+            .then(({ body: { year } }) => {
+                expect(year).toEqual([]);
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .get("/api/students/100/year")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("400: responds with an error message when passed an invalid student_id", () => {
+        return request(app)
+            .get("/api/students/invalid/year")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request")
+            })
+    })
+})
+
+describe("POST /api/students/:student_id/year", () => {
+    test("201: responds with the posted year object", () => {
+        return request(app)
+            .post("/api/students/5/year")
+            .send({
+                year: 12
+            })
+            .expect(201)
+            .then(({ body: { year } }) => {
+                expect(year.student_id).toBe(5);
+                expect(year.year_id).toBe(1);
+            })
+    })
+    test("201: responds with the posted year object when passed a year object with extra keys", () => {
+        return request(app)
+            .post("/api/students/5/year")
+            .send({
+                year: 12,
+                extra: "key"
+            })
+            .expect(201)
+            .then(({ body: { year } }) => {
+                expect(year.student_id).toBe(5);
+                expect(year.year_id).toBe(1);
+            })
+    })
+    test("400: responds with an error message when passed an invalid year object", () => {
+        return request(app)
+            .post("/api/students/5/year")
+            .send({
+                invalid: "12"
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Year not found")
+            })
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .post("/api/students/100/year")
+            .send({
+                year: 12
+            })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("404: responds with an error message when passed year object to a student who already has a year assigned", () => {
+        return request(app)
+            .post("/api/students/1/year")
+            .send({
+                year: 12
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student already has a year")
+            })
+    })
+})
+
+describe("DELETE /api/students/:student_id/year/:year_id", () => {
+    test("204: responds with no content", () => {
+        return request(app)
+            .delete("/api/students/1/year/1")
+            .expect(204)
+    })
+    test("404: responds with an error message when passed a non-existent student_id", () => {
+        return request(app)
+            .delete("/api/students/100/year/1")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Student not found")
+            })
+    })
+    test("404: responds with an error message when passed a year_id not assigned to a student", () => {
+        return request(app)
+            .delete("/api/students/1/year/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Year not found")
+            })
+    })
+})

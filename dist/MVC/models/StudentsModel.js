@@ -58,3 +58,20 @@ exports.postNewStudentSubject = (student_id, subject_name) => {
 exports.deleteStudentSubject = (student_id, subject_id) => {
     return db.query(`DELETE FROM students_subjects WHERE student_id = $1 AND subject_id = $2;`, [student_id, subject_id]);
 };
+exports.fetchStudentYear = (student_id) => {
+    return db.query(`SELECT * FROM students_year LEFT JOIN years ON students_year.year_id = years.year_id WHERE student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};
+exports.postYear = (student_id, year) => {
+    return db.query(`INSERT INTO students_year (student_id, year_id) VALUES ($1, (SELECT year_id FROM years WHERE year = $2)) RETURNING *;`, [student_id, year])
+        .then((result) => {
+        if (typeof result.rows[0].year_id !== "number")
+            return Promise.reject({ status: 400, msg: "Year not found" });
+        return result.rows[0];
+    });
+};
+exports.deleteStudentYear = (student_id, year_id) => {
+    return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id]);
+};
