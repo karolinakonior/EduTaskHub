@@ -1,9 +1,10 @@
 import { Teacher } from "../test-data/teachers"
-import { Student } from "../test-data/students"
+import { Student, students } from "../test-data/students"
 import { Subject } from "../test-data/subjects"
 import { TeacherSubject } from "../test-data/teachers-subjects"
 import { StudentSubject } from "../test-data/students-subjects"
 import { Year } from "../test-data/year"
+import { StudentYear } from "../test-data/students-year"
 
 const db = require("../../pool");
 const format = require("pg-format");
@@ -27,11 +28,17 @@ type Data = {
     yearsData: {
         years: Year[]
     }
+    studentsYearData: {
+        studentsYear: StudentYear[]
+    }
 }
 
-export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData }: Data) => {
+export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData }: Data) => {
     return db
     .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS students_year CASCADE;`)
+    })
     .then(() => {
         return db.query(`DROP TABLE IF EXISTS years CASCADE;`)
     })
@@ -88,6 +95,12 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             year_id SERIAL PRIMARY KEY,
             year INT NOT NULL
             );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE students_year (
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            year_id INT REFERENCES years(year_id) ON DELETE CASCADE
+        );`)
     })
     .then(() => {
         const formattedTeachersData = format(
@@ -162,5 +175,17 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             ])
         )
         return db.query(formattedYearsData);
+    })
+    .then(() => {
+        const formattedStudentsYearData = format(
+            `INSERT INTO students_year
+            (student_id, year_id)
+            VALUES %L RETURNING *;`,
+            studentsYearData.studentsYear.map((studentYear: StudentYear) => [
+                studentYear.student_id,
+                studentYear.year_id
+            ])
+        )
+        return db.query(formattedStudentsYearData);
     })
 }

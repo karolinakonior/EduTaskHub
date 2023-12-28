@@ -338,3 +338,19 @@ describe("DELETE /api/students/:student_id/subjects/:subject_id", () => {
             })
     })
 })
+
+describe("GET /api/students/:student_id/year", () => {
+    test("200: responds with an array of year objects", () => {
+        return request(app)
+            .get("/api/students/1/year")
+            .expect(200)
+            .then(({ body: { year } }) => {
+                expect(year).toHaveLength(1);
+                expect(year[0]).toEqual({
+                    year_id: 1,
+                    year: 12,
+                    student_id: 1
+                })
+            })
+    })
+})

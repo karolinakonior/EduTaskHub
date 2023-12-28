@@ -58,3 +58,9 @@ exports.postNewStudentSubject = (student_id, subject_name) => {
 exports.deleteStudentSubject = (student_id, subject_id) => {
     return db.query(`DELETE FROM students_subjects WHERE student_id = $1 AND subject_id = $2;`, [student_id, subject_id]);
 };
+exports.fetchStudentYear = (student_id) => {
+    return db.query(`SELECT * FROM students_year LEFT JOIN years ON students_year.year_id = years.year_id WHERE student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};

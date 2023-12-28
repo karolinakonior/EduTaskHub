@@ -244,5 +244,17 @@
                 }
             ]
         }
+    },
+    "GET /api/students/:student_id/year": {
+        "description": "Returns a single year for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "year" : {
+                "year_id": 1,
+                "year": 12,
+                "student_id": 1
+            }
+        }
     }
 }
