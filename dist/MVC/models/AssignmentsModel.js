@@ -15,3 +15,11 @@ exports.postSingleAssignment = (assignment) => {
         return assignment.rows[0];
     });
 };
+exports.fetchAssignmentById = (assignment_id) => {
+    return db.query(`SELECT * FROM assignments WHERE assignment_id = $1`, [assignment_id])
+        .then((assignment) => {
+        if (assignment.rows.length === 0)
+            return Promise.reject({ status: 404, msg: "Assignment not found" });
+        return assignment.rows[0];
+    });
+};
