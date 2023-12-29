@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "jest-extended": "^4.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -29,5 +30,10 @@
     "playground": "psql -f playground.sql > playground.txt"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-extended/all"
+    ]
+  }
 }
