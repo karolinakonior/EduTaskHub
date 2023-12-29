@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
-const utils_1 = require("./utils");
 const db = require("../../pool");
 const format = require("pg-format");
 const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData, assignmentsData }) => {
@@ -81,7 +80,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
             assignment_id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             description VARCHAR(500) NOT NULL,
-            due_date TIMESTAMP NOT NULL,
+            due_date DATE NOT NULL,
             teacher_id INT REFERENCES teachers(teacher_id) ON DELETE CASCADE,
             year_id INT REFERENCES years(year_id) ON DELETE CASCADE,
             subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
@@ -153,10 +152,9 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
         return db.query(formattedStudentsYearData);
     })
         .then(() => {
-        const insertDate = assignmentsData.assignments.map(utils_1.convertTimestampToDate);
         const formattedAssignmentsData = format(`INSERT INTO assignments
             (name, description, due_date, teacher_id, year_id, subject_id)
-            VALUES %L RETURNING *;`, insertDate.map((assignment) => [
+            VALUES %L RETURNING *;`, assignmentsData.assignments.map((assignment) => [
             assignment.name,
             assignment.description,
             assignment.due_date,
