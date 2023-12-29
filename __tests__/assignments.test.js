@@ -8,7 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe("GET /api/assignments", () => {
-    test("200: responds with an array of assignment objects", async () => {
+    test("200: responds with an array of assignment objects", () => {
         return request(app)
             .get("/api/assignments")
             .expect(200)
@@ -23,6 +23,112 @@ describe("GET /api/assignments", () => {
                     year_id: 1,
                     subject_id: 1
                 })
+            })
+    })
+})
+
+describe("POST /api/assignments", () => {
+    test("201: responds with the posted assignment", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 1
+            })
+            .expect(201)
+            .then(({ body: { assignment } }) => {
+                expect(assignment).toEqual({
+                    assignment_id: 4,
+                    name: "Test Assignment",
+                    description: "Test description",
+                    due_date: "2020-11-07T00:00:00.000Z",
+                    teacher_id: 1,
+                    year_id: 1,
+                    subject_id: 1
+                })
+            })
+    })
+    test("400: responds with an error message when the request body is missing a required key", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the request body contains an invalid value", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: "invalid"
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the teacher_id does not exist", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 100,
+                year_id: 1,
+                subject_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the year_id does not exist", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 100,
+                subject_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the subject_id does not exist", () => {
+        return request(app)
+            .post("/api/assignments")
+            .send({
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 100
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
             })
     })
 })

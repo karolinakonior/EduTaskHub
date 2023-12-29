@@ -6,7 +6,6 @@ import { StudentSubject } from "../test-data/students-subjects"
 import { Year } from "../test-data/year"
 import { StudentYear } from "../test-data/students-year"
 import { Assignment } from "../test-data/assignments"
-import { convertTimestampToDate } from "./utils"
 
 const db = require("../../pool");
 const format = require("pg-format");
