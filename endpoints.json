@@ -356,5 +356,11 @@
                 "subject_id": 1
             }
         }
+    },
+    "DELETE /api/assignments/:assignment_id": {
+        "description": "Deletes a single assignment",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
     }
 }

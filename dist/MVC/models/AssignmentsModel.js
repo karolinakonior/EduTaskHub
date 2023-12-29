@@ -31,3 +31,6 @@ exports.patchAssignment = (assignment_id, body) => {
         return assignment.rows[0];
     });
 };
+exports.deleteAssignment = (assignment_id) => {
+    return db.query(`DELETE FROM assignments WHERE assignment_id = $1`, [assignment_id]);
+};

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment } = require("../models/AssignmentsModel")
+const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment } = require("../models/AssignmentsModel")
 import { Assignment } from "../../db/data/test-data/assignments"
 
 exports.getAssignments = (req: Request, res: Response, next: NextFunction) => {
@@ -39,6 +39,19 @@ exports.patchAssignmentById = (req: Request, res: Response, next: NextFunction) 
     })
     .then((assignment: Assignment) => {
         res.status(200).send({ assignment })
+    })
+    .catch((err: Error) => {
+        next(err)
+    })
+}
+
+exports.deleteAssignmentById = (req: Request, res: Response, next: NextFunction) => {
+    fetchAssignmentById(req.params.assignment_id)
+    .then(() => {
+        return deleteAssignment(req.params.assignment_id)
+    })
+    .then(() => {
+        res.sendStatus(204)
     })
     .catch((err: Error) => {
         next(err)

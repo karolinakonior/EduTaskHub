@@ -305,3 +305,27 @@ describe("PATCH /api/assignments/:assignment_id", () => {
             })
     })
 })
+
+describe("DELETE /api/assignments/:assignment_id", () => {
+    test("204: responds with no content", () => {
+        return request(app)
+            .delete("/api/assignments/1")
+            .expect(204)
+    })
+    test("404: responds with an error message when the assignment_id does not exist", () => {
+        return request(app)
+            .delete("/api/assignments/100")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Assignment not found");
+            })
+    })
+    test("400: responds with an error message when the assignment_id is invalid", () => {
+        return request(app)
+            .delete("/api/assignments/invalid")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+})
