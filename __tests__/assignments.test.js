@@ -167,3 +167,141 @@ describe("GET /api/assignments/:assignment_id", () => {
             })
     })
 })
+
+describe("PATCH /api/assignments/:assignment_id", () => {
+    test(("200: responds with the updated assignment"), () => {
+        return request(app)
+        .patch("/api/assignments/1")
+        .send({ 
+            name: "Test Assignment",
+            description: "Test description",
+            due_date: "2020-11-07",
+            teacher_id: 1,
+            year_id: 1,
+            subject_id: 1
+        })
+        .expect(200)
+        .then(({ body: { assignment } }) => {
+            expect(assignment).toEqual({
+                assignment_id: 1,
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07T00:00:00.000Z",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 1
+            })
+        })
+    })
+    test("404: responds with an error message when the assignment_id does not exist", () => {
+        return request(app)
+            .patch("/api/assignments/100")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 1
+            })
+            .expect(404)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Assignment not found");
+            })
+    })
+    test("400: responds with an error message when the assignment_id is invalid", () => {
+        return request(app)
+            .patch("/api/assignments/invalid")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the request body contains an invalid value", () => {
+        return request(app)
+            .patch("/api/assignments/1")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: "invalid"
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the teacher_id does not exist", () => {
+        return request(app)
+            .patch("/api/assignments/1")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 100,
+                year_id: 1,
+                subject_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the year_id does not exist", () => {
+        return request(app)
+            .patch("/api/assignments/1")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 100,
+                subject_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the subject_id does not exist", () => {
+        return request(app)
+            .patch("/api/assignments/1")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1,
+                subject_id: 100
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+    test("400: responds with an error message when the request body is missing a required key", () => {
+        return request(app)
+            .patch("/api/assignments/1")
+            .send({ 
+                name: "Test Assignment",
+                description: "Test description",
+                due_date: "2020-11-07",
+                teacher_id: 1,
+                year_id: 1
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+                expect(msg).toBe("Bad request");
+            })
+    })
+})

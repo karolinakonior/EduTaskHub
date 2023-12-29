@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchAssignments, postSingleAssignment, fetchAssignmentById } = require("../models/AssignmentsModel")
+const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment } = require("../models/AssignmentsModel")
 import { Assignment } from "../../db/data/test-data/assignments"
 
 exports.getAssignments = (req: Request, res: Response, next: NextFunction) => {
@@ -24,6 +24,19 @@ exports.postAssignment = (req: Request, res: Response, next: NextFunction) => {
 
 exports.getAssignmentById = (req: Request, res: Response, next: NextFunction) => {
     fetchAssignmentById(req.params.assignment_id)
+    .then((assignment: Assignment) => {
+        res.status(200).send({ assignment })
+    })
+    .catch((err: Error) => {
+        next(err)
+    })
+}
+
+exports.patchAssignmentById = (req: Request, res: Response, next: NextFunction) => {
+    fetchAssignmentById(req.params.assignment_id)
+    .then(() => {
+        return patchAssignment(req.params.assignment_id, req.body)
+    })
     .then((assignment: Assignment) => {
         res.status(200).send({ assignment })
     })

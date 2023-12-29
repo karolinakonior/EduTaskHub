@@ -1,5 +1,5 @@
 export const assignmentsRouter = require("express").Router();
-const { getAssignments, postAssignment, getAssignmentById } = require("../controllers/AssignmentsController")
+const { getAssignments, postAssignment, getAssignmentById, patchAssignmentById } = require("../controllers/AssignmentsController")
 
 assignmentsRouter.route("/").get(getAssignments).post(postAssignment)
-assignmentsRouter.route("/:assignment_id").get(getAssignmentById)
+assignmentsRouter.route("/:assignment_id").get(getAssignmentById).patch(patchAssignmentById)
