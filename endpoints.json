@@ -276,5 +276,91 @@
         "queries": [],
         "exampleRequest": {},
         "exampleResponse": {}
+    },
+    "GET /api/assignments": {
+        "description": "Returns an array of all assignments",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "assignments" : [
+                {
+                    "assignment_id": 1,
+                    "name": "The effect of the concentration of salt solution on the mass of potatoes",
+                    "description": "Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.",
+                    "due_date": "2020-11-07T00:00:00.000Z",
+                    "teacher_id": 1,
+                    "year_id": 1,
+                    "subject_id": 1
+                }
+            ]
+        }
+    },
+    "POST /api/asignments": {
+        "description": "Creates a single assignment",
+        "queries": [],
+        "exampleRequest": {
+            "name": "Test Assignment",
+            "description": "Test description",
+            "due_date": "2020-11-07T00:00:00.000Z",
+            "teacher_id": 1,
+            "year_id": 100,
+            "subject_id": 1
+        },
+        "exampleResponse": {
+            "assignment": {
+                "assignment_id": 1,
+                "name": "Test Assignment",
+                "description": "Test description",
+                "due_date": "2020-11-07T00:00:00.000Z",
+                "teacher_id": 1,
+                "year_id": 100,
+                "subject_id": 1
+            }
+        }
+    },
+    "GET /api/assignments/:assignment_id": {
+        "description": "Returns a single assignment",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "assignment": {
+                "assignment_id": 1,
+                "name": "Test Assignment",
+                "description": "Test description",
+                "due_date": "2020-11-07T00:00:00.000Z",
+                "teacher_id": 1,
+                "year_id": 100,
+                "subject_id": 1
+            }
+        }
+    },
+    "PATCH /api/assignments/:assignment_id": {
+        "description": "Updates a single assignment",
+        "queries": [],
+        "exampleRequest": {
+                "name": "Test Assignment",
+                "description": "Test description",
+                "due_date": "2020-11-07T00:00:00.000Z",
+                "teacher_id": 1,
+                "year_id": 100,
+                "subject_id": 1
+        },
+        "exampleResponse": {
+            "assignment": {
+                "assignment_id": 1,
+                "name": "Test Assignment",
+                "description": "Test description",
+                "due_date": "2020-11-07T00:00:00.000Z",
+                "teacher_id": 1,
+                "year_id": 100,
+                "subject_id": 1
+            }
+        }
+    },
+    "DELETE /api/assignments/:assignment_id": {
+        "description": "Deletes a single assignment",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {}
     }
 }

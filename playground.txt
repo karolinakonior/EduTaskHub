@@ -64,3 +64,10 @@ You are now connected to database "eth_test" as user "karolinakonior".
           4 |       2
 (4 rows)
 
+ assignment_id |                                                       name                                                       |                                                                                    description                                                                                     |  due_date  | teacher_id | year_id | subject_id 
+---------------+------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+---------+------------
+             1 | The effect of the concentration of salt solution on the mass of potatoes                                         | Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.                      | 2020-11-07 |          1 |       1 |          1
+             2 | The effect of temperature during the rising process of dough on the volume of bread                              | Write an essay on the effect of temperature during the rising process of dough on the volume of bread. Include a hypothesis, method, results, discussion and conclusion.           | 2020-11-07 |          1 |       2 |          1
+             3 | State and explain Hund’s Rule. Write the electron configuration (orbital notation) for nitrogen using this rule. | Write an essay on Hund’s Rule. Write the electron configuration (orbital notation) for nitrogen using this rule. Include a hypothesis, method, results, discussion and conclusion. | 2020-11-07 |          2 |       2 |          2
+(3 rows)
+
