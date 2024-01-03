@@ -1,4 +1,5 @@
 import { type Student } from "../../db/data/test-data/students";
+import { type Assignment } from "../../types/Assignment"
 const db = require("../../../dist/db/pool.js");
 const bcrypt = require("bcrypt");
 
@@ -19,6 +20,10 @@ type YearProps = {
         year_id: number,
         student_id: number
     }[]
+}
+
+type AssignmentProps = {
+    rows: Assignment[]
 }
 
 exports.fetchStudents = () => {
@@ -100,4 +105,15 @@ exports.postYear = (student_id: number, year: number) => {
 
 exports.deleteStudentYear = (student_id: number, year_id: number) => {
     return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id])
+}
+
+exports.fetchStudentAssignements = (student_id: number) => {
+    return db.query(`SELECT DISTINCT assignments.*
+    FROM assignments 
+    JOIN students_subjects ON students_subjects.subject_id = assignments.subject_id 
+    JOIN students_year ON students_year.year_id = assignments.year_id 
+    WHERE students_year.student_id = $1;`, [student_id])
+    .then((result: AssignmentProps) => {
+        return result.rows;
+    })
 }

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
 import { Subject } from "../../db/data/test-data/subjects";
+import { Assignment } from "../../types/Assignment"
 
 type YearProps = {
     year: number,
@@ -173,6 +174,19 @@ exports.deleteStudentYearById = (req: Request, res: Response, next: NextFunction
     })
     .then(() => {
         res.sendStatus(204)
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentAssignments = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentAssignements(req.params.student_id)
+    })
+    .then((assignments: Assignment[]) => {
+        res.status(200).send({ assignments });
     })
     .catch((err: Error) => {
         next(err);
