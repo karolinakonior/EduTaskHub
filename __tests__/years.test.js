@@ -19,4 +19,4 @@ describe("GET /api/years", () => {
                 })
             })
     })
-})
+});
