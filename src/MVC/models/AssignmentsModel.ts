@@ -52,3 +52,11 @@ exports.fetchFeedbackByAssignmentId = (assignment_id: number) => {
         return feedback.rows;
     })
 }
+
+exports.postFeedback = (body: Feedback) => {
+    if(!body.submission_id || !body.feedback || !body.grade || !body.teacher_id || !body.student_id) return Promise.reject({ status: 400, msg: "Bad request" })
+    return db.query(`INSERT INTO feedback (submission_id, feedback, grade, teacher_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [body.submission_id, body.feedback, body.grade, body.teacher_id, body.student_id])
+    .then((feedback: FeedbackProps) => {
+        return feedback.rows[0];
+    })
+}

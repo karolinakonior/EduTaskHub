@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment, fetchFeedbackByAssignmentId } = require("../models/AssignmentsModel")
+const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment, fetchFeedbackByAssignmentId, postFeedback } = require("../models/AssignmentsModel")
 import { Assignment } from "../../types/Assignment"
 import { Feedback } from "../../types/Feedback"
 
@@ -69,5 +69,18 @@ exports.getFeedbackByAssignmentId = (req: Request, res: Response, next: NextFunc
     })
     .catch((err: Error) => {
         next(err)
+    })
+}
+
+exports.postFeedbackByAssignmentId = (req: Request, res: Response, next: NextFunction) => {
+    fetchAssignmentById(req.params.assignment_id)
+    .then(() => {
+        return postFeedback(req.body);
+    })
+    .then((feedback: Feedback) => {
+        res.status(201).send({ feedback })
+    })
+    .catch((err: Error) => {
+        next(err);
     })
 }

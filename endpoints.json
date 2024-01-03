@@ -436,5 +436,27 @@
                 "teacher_id": 1
             }
         }
+    },
+    "POST /api/assignments/:assignment_id/feedback": {
+        "description": "Creates a single feedback for a single assignment",
+        "queries": [],
+        "exampleRequest": {
+            "student_id": 2,
+            "feedback": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "grade": "A",
+            "teacher_id": 1,
+            "submission_id": 1
+        },
+        "exampleResponse": {
+            "feedback": {
+                "feedback_id": 1,
+                "submission_id": 1,
+                "student_id": 1,
+                "feedback": "Test feedback",
+                "submitted_at": "2024-01-03T14:06:35.799Z",
+                "grade": "A",
+                "teacher_id": 1
+            }
+        }
     }
 }
