@@ -1,18 +1,12 @@
-import { type Student } from "../../db/data/test-data/students";
-import { type Assignment } from "../../types/Assignment"
+import { type Student } from "../../types/Student";
 import { type Submission } from "../../types/Submission";
+import { AssignmentProps } from "../../types/AssignmentProps";
+import { SubjectProps } from "../../types/SubjectProps";
 const db = require("../../../dist/db/pool.js");
 const bcrypt = require("bcrypt");
 
 type StudentsProps = {
     rows: Student[]
-}
-
-type SubjectsProps = {
-    rows: {
-        subject_id: number,
-        subject_name: string
-    }[]
 }
 
 type YearProps = {
@@ -21,10 +15,6 @@ type YearProps = {
         year_id: number,
         student_id: number
     }[]
-}
-
-type AssignmentProps = {
-    rows: Assignment[]
 }
 
 type SubmissionProps = {
@@ -76,14 +66,14 @@ exports.deleteStudent = (student_id: number) => {
 
 exports.fetchStudentSubjects = (student_id: number) => {
     return db.query(`SELECT students_subjects.subject_id, subjects.subject_name FROM students_subjects LEFT JOIN subjects ON students_subjects.subject_id = subjects.subject_id WHERE student_id = $1;`, [student_id])
-    .then((result: SubjectsProps) => {
+    .then((result: SubjectProps) => {
         return result.rows;
     })
 }
 
 exports.postNewStudentSubject = (student_id: number, subject_name: string) => {
     return db.query(`INSERT INTO students_subjects (student_id, subject_id) VALUES ($1, (SELECT subject_id FROM subjects WHERE subject_name = $2)) RETURNING *;`, [student_id, subject_name])
-    .then((result: SubjectsProps) => {
+    .then((result: SubjectProps) => {
         if(typeof result.rows[0].subject_id !== "number") return Promise.reject({ status: 400, msg: "Subject not found" })
         return result.rows[0];
     })

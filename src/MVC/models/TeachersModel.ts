@@ -1,5 +1,5 @@
-import { type Teacher } from "../../db/data/test-data/teachers"
-import { type Subject } from "../../db/data/test-data/subjects"
+import { type Teacher } from "../../types/Teacher"
+import { type Subject } from "../../types/Subject"
 const { fetchSubjects } = require("./SubjectsModel");
 const bcrypt = require("bcrypt");
 const db = require("../../../dist/db/pool.js");

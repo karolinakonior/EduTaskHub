@@ -1,7 +1,4 @@
-export interface Subject {
-    subject_id: number;
-    subject_name: string;
-}
+import { Subject } from "../../../types/Subject";
 
 export const subjects: Subject[] = [
     {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Teacher } from "../../db/data/test-data/teachers";
+import { Teacher } from "../../types/Teacher";
 const { fetchTeachers, fetchTeacherById, patchTeacher, postNewTeacher, deleteTeacher, fetchTeachersSubject, postNewTeachersSubject, deleteSingleTeachersSubject } = require("../models/TeachersModel");
 
 type SubjectProps = {

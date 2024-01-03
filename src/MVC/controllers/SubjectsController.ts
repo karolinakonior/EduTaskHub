@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Subject } from "../../db/data/test-data/subjects";
+import { Subject } from "../../types/Subject";
 const { fetchSubjects } = require("../models/SubjectsModel")
 
 exports.getSubjects = (req: Request, res: Response, next: NextFunction) => {

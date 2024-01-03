@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements, fetchStudentSubmissions, postSubmission, fetchStudentSubmissionByID } = require("../models/StudentsModel");
-import { Student } from "../../db/data/test-data/students";
-import { Subject } from "../../db/data/test-data/subjects";
+import { Student } from "../../types/Student"
+import { Subject } from "../../types/Subject";
 import { Assignment } from "../../types/Assignment"
 import { Submission } from "../../types/Submission";
 

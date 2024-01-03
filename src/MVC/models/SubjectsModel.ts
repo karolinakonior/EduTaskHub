@@ -1,9 +1,5 @@
 const db = require("../../../dist/db/pool.js");
-import { Subject } from "../../db/data/test-data/subjects";
-
-type SubjectProps = {
-    rows: Subject[]
-}
+import { SubjectProps } from "../../types/SubjectProps";
 
 exports.fetchSubjects = () => {
     return db.query("SELECT * FROM subjects")

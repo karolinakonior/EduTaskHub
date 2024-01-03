@@ -1,7 +1,4 @@
-export interface StudentSubject {
-    student_id: number;
-    subject_id: number;
-}
+import { StudentSubject } from "../../../types/StudentSubject";
 
 export const studentsSubjects: StudentSubject[] = [
     {
