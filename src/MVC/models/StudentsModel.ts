@@ -1,5 +1,6 @@
 import { type Student } from "../../db/data/test-data/students";
 import { type Assignment } from "../../types/Assignment"
+import { type Submission } from "../../types/Submission";
 const db = require("../../../dist/db/pool.js");
 const bcrypt = require("bcrypt");
 
@@ -24,6 +25,10 @@ type YearProps = {
 
 type AssignmentProps = {
     rows: Assignment[]
+}
+
+type SubmissionProps = {
+    rows: Submission[]
 }
 
 exports.fetchStudents = () => {
@@ -114,6 +119,13 @@ exports.fetchStudentAssignements = (student_id: number) => {
     JOIN students_year ON students_year.year_id = assignments.year_id 
     WHERE students_year.student_id = $1;`, [student_id])
     .then((result: AssignmentProps) => {
+        return result.rows;
+    })
+}
+
+exports.fetchStudentSubmissions = (student_id: number) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1;`, [student_id])
+    .then((result: SubmissionProps) => {
         return result.rows;
     })
 }

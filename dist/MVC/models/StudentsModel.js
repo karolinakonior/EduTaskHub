@@ -85,3 +85,9 @@ exports.fetchStudentAssignements = (student_id) => {
         return result.rows;
     });
 };
+exports.fetchStudentSubmissions = (student_id) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};
