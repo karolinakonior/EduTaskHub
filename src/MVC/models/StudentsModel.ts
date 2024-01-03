@@ -1,4 +1,6 @@
 import { type Student } from "../../db/data/test-data/students";
+import { type Assignment } from "../../types/Assignment"
+import { type Submission } from "../../types/Submission";
 const db = require("../../../dist/db/pool.js");
 const bcrypt = require("bcrypt");
 
@@ -19,6 +21,14 @@ type YearProps = {
         year_id: number,
         student_id: number
     }[]
+}
+
+type AssignmentProps = {
+    rows: Assignment[]
+}
+
+type SubmissionProps = {
+    rows: Submission[]
 }
 
 exports.fetchStudents = () => {
@@ -100,4 +110,38 @@ exports.postYear = (student_id: number, year: number) => {
 
 exports.deleteStudentYear = (student_id: number, year_id: number) => {
     return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id])
+}
+
+exports.fetchStudentAssignements = (student_id: number) => {
+    return db.query(`SELECT DISTINCT assignments.*
+    FROM assignments 
+    JOIN students_subjects ON students_subjects.subject_id = assignments.subject_id 
+    JOIN students_year ON students_year.year_id = assignments.year_id 
+    WHERE students_year.student_id = $1;`, [student_id])
+    .then((result: AssignmentProps) => {
+        return result.rows;
+    })
+}
+
+exports.fetchStudentSubmissions = (student_id: number) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1;`, [student_id])
+    .then((result: SubmissionProps) => {
+        return result.rows;
+    })
+}
+
+exports.postSubmission = (student_id: number, assignment_id: number, solution: string) => {
+    if(!solution || !student_id || !assignment_id) return Promise.reject({ status: 400, msg: "Bad request" })
+    return db.query(`INSERT INTO submissions (student_id, assignment_id, solution) VALUES ($1, $2, $3) RETURNING *;`, [student_id, assignment_id, solution])
+    .then((result: SubmissionProps) => {
+        return result.rows[0];
+    })
+}
+
+exports.fetchStudentSubmissionByID = (student_id: number, submission_id: number) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1 AND submission_id = $2;`, [student_id, submission_id])
+    .then((result: SubmissionProps) => {
+        if(result.rows.length === 0) return Promise.reject({ status: 404, msg: "Submission not found" })
+        return result.rows[0];
+    })
 }

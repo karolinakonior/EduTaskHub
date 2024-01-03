@@ -75,3 +75,35 @@ exports.postYear = (student_id, year) => {
 exports.deleteStudentYear = (student_id, year_id) => {
     return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id]);
 };
+exports.fetchStudentAssignements = (student_id) => {
+    return db.query(`SELECT DISTINCT assignments.*
+    FROM assignments 
+    JOIN students_subjects ON students_subjects.subject_id = assignments.subject_id 
+    JOIN students_year ON students_year.year_id = assignments.year_id 
+    WHERE students_year.student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};
+exports.fetchStudentSubmissions = (student_id) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1;`, [student_id])
+        .then((result) => {
+        return result.rows;
+    });
+};
+exports.postSubmission = (student_id, assignment_id, solution) => {
+    if (!solution || !student_id || !assignment_id)
+        return Promise.reject({ status: 400, msg: "Bad request" });
+    return db.query(`INSERT INTO submissions (student_id, assignment_id, solution) VALUES ($1, $2, $3) RETURNING *;`, [student_id, assignment_id, solution])
+        .then((result) => {
+        return result.rows[0];
+    });
+};
+exports.fetchStudentSubmissionByID = (student_id, submission_id) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1 AND submission_id = $2;`, [student_id, submission_id])
+        .then((result) => {
+        if (result.rows.length === 0)
+            return Promise.reject({ status: 404, msg: "Submission not found" });
+        return result.rows[0];
+    });
+};

@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const db = require("../../pool");
 const format = require("pg-format");
-const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData, assignmentsData }) => {
+const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData, assignmentsData, submissionsData }) => {
     return db
         .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+        .then(() => {
+        return db.query(`DROP TABLE IF EXISTS submissions CASCADE;`);
+    })
         .then(() => {
         return db.query(`DROP TABLE IF EXISTS assignments CASCADE;`);
     })
@@ -87,6 +90,15 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
         );`);
     })
         .then(() => {
+        return db.query(`CREATE TABLE submissions (
+            submission_id SERIAL PRIMARY KEY,
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            assignment_id INT REFERENCES assignments(assignment_id) ON DELETE CASCADE,
+            solution VARCHAR(2000) NOT NULL,
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );`);
+    })
+        .then(() => {
         const formattedTeachersData = format(`INSERT INTO teachers
             (first_name, last_name, email, password)
             VALUES %L RETURNING *;`, teachersData.teachers.map((teacher) => [
@@ -163,6 +175,17 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
             assignment.subject_id
         ]));
         return db.query(formattedAssignmentsData);
+    })
+        .then(() => {
+        const formattedSubmissionsData = format(`INSERT INTO submissions
+            (student_id, assignment_id, solution, submitted_at)
+            VALUES %L RETURNING *;`, submissionsData.submissions.map((submission) => [
+            submission.student_id,
+            submission.assignment_id,
+            submission.solution,
+            submission.submitted_at
+        ]));
+        return db.query(formattedSubmissionsData);
     });
 };
 exports.seed = seed;

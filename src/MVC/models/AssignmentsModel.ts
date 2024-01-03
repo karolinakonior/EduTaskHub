@@ -1,5 +1,5 @@
 const db = require("../../../dist/db/pool.js");
-import { Assignment } from "../../db/data/test-data/assignments";
+import { Assignment } from "../../types/Assignment";
 
 type AssignmentProps = {
     rows: Assignment[]

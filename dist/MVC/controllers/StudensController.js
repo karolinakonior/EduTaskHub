@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements, fetchStudentSubmissions, postSubmission, fetchStudentSubmissionByID } = require("../models/StudentsModel");
 exports.getStudents = (req, res, next) => {
     fetchStudents()
         .then((students) => {
@@ -162,6 +162,54 @@ exports.deleteStudentYearById = (req, res, next) => {
     })
         .then(() => {
         res.sendStatus(204);
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.getStudentAssignments = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentAssignements(req.params.student_id);
+    })
+        .then((assignments) => {
+        res.status(200).send({ assignments });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.getStudentSubmissions = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentSubmissions(req.params.student_id);
+    })
+        .then((submissions) => {
+        res.status(200).send({ submissions });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.postStudentSubmission = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return postSubmission(req.params.student_id, req.body.assignment_id, req.body.solution);
+    })
+        .then((submission) => {
+        res.status(201).send({ submission });
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.getStudentSubmissionsByID = (req, res, next) => {
+    fetchStudentById(req.params.student_id)
+        .then(() => {
+        return fetchStudentSubmissionByID(req.params.student_id, req.params.submission_id);
+    })
+        .then((submission) => {
+        res.status(200).send({ submission });
     })
         .catch((err) => {
         next(err);

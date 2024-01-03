@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements, fetchStudentSubmissions, postSubmission, fetchStudentSubmissionByID } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
 import { Subject } from "../../db/data/test-data/subjects";
+import { Assignment } from "../../types/Assignment"
+import { Submission } from "../../types/Submission";
 
 type YearProps = {
     year: number,
@@ -173,6 +175,58 @@ exports.deleteStudentYearById = (req: Request, res: Response, next: NextFunction
     })
     .then(() => {
         res.sendStatus(204)
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentAssignments = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentAssignements(req.params.student_id)
+    })
+    .then((assignments: Assignment[]) => {
+        res.status(200).send({ assignments });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentSubmissions = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentSubmissions(req.params.student_id);
+    })
+    .then((submissions: Submission[]) => {
+        res.status(200).send({ submissions });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentSubmission = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return postSubmission(req.params.student_id, req.body.assignment_id, req.body.solution)
+    })
+    .then((submission: Submission) => {
+        res.status(201).send({ submission });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.getStudentSubmissionsByID = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return fetchStudentSubmissionByID(req.params.student_id, req.params.submission_id);
+    })
+    .then((submission: Submission) => {
+        res.status(200).send({ submission });
     })
     .catch((err: Error) => {
         next(err);

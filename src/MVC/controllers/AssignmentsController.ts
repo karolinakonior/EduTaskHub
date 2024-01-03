@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment } = require("../models/AssignmentsModel")
-import { Assignment } from "../../db/data/test-data/assignments"
+import { Assignment } from "../../types/Assignment"
 
 exports.getAssignments = (req: Request, res: Response, next: NextFunction) => {
     fetchAssignments()
