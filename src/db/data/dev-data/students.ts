@@ -1,10 +1,4 @@
-export interface Student {
-    student_id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-}
+import { Student } from "../../../types/Student";
 
 export const students: Student[] = [
     {

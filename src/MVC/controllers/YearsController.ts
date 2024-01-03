@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 const { fetchYears } = require("../models/YearsModel");
-import { Year } from "../../db/data/test-data/year";
+import { Year } from "../../types/Year";
 
 export const getYears = (req: Request, res: Response, next: NextFunction) => {
     fetchYears()

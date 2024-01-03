@@ -1,5 +1,5 @@
 const db = require("../../../dist/db/pool.js");
-import { Year } from "../../db/data/test-data/year";
+import { Year } from "../../types/Year";
 
 type YearProps = {
     rows: Year[]

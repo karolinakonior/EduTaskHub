@@ -1,7 +1,4 @@
-export interface TeacherSubject {
-    teacher_id: number;
-    subject_id: number;
-}
+import { TeacherSubject } from "../../../types/TeacherSubject";
 
 export const teachersSubjects: TeacherSubject[] = [
     {

@@ -1,10 +1,7 @@
 const db = require("../../../dist/db/pool.js");
 import { Assignment } from "../../types/Assignment";
 import { Feedback } from "../../types/Feedback";
-
-type AssignmentProps = {
-    rows: Assignment[]
-}
+import { AssignmentProps } from "../../types/AssignmentProps";
 
 type FeedbackProps = {
     rows: Feedback[]

@@ -1,7 +1,4 @@
-export interface Year {
-    year_id: number;
-    year: number;
-}
+import { Year } from '../../../types/Year';
 
 export const years: Year[] = [
     {
