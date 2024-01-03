@@ -1,9 +1,9 @@
 {
   "devDependencies": {
+    "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-extended": "^4.0.2",
-    "typescript": "^5.3.3",
-    "husky": "^8.0.0"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
@@ -30,8 +30,7 @@
     "seed": "node ./dist/db/data/seeds/run-seed.js",
     "playground": "psql -f playground.sql > playground.txt",
     "start": "node listen.js",
-    "seed-prod": "NODE_ENV=production npm run seed",
-    "prepare": "husky install"
+    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "author": "",
   "license": "ISC",
