@@ -6,6 +6,7 @@ import { StudentSubject } from "../test-data/students-subjects"
 import { Year } from "../test-data/year"
 import { StudentYear } from "../test-data/students-year"
 import { Assignment } from "../../../types/Assignment"
+import { Submission } from "../../../types/Submission"
 
 const db = require("../../pool");
 const format = require("pg-format");
@@ -34,12 +35,18 @@ type Data = {
     },
     assignmentsData: {
         assignments: Assignment[]
+    },
+    submissionsData: {
+        submissions: Submission[]
     }
 }
 
-export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData, assignmentsData }: Data) => {
+export const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, studentsSubjectsData, yearsData, studentsYearData, assignmentsData, submissionsData }: Data) => {
     return db
     .query(`DROP TABLE IF EXISTS teachers_subjects CASCADE;`)
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS submissions CASCADE;`)
+    })
     .then(() => {
         return db.query(`DROP TABLE IF EXISTS assignments CASCADE;`)
     })
@@ -118,6 +125,15 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             teacher_id INT REFERENCES teachers(teacher_id) ON DELETE CASCADE,
             year_id INT REFERENCES years(year_id) ON DELETE CASCADE,
             subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
+        );`)
+    })
+    .then(() => {
+        return db.query(`CREATE TABLE submissions (
+            submission_id SERIAL PRIMARY KEY,
+            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            assignment_id INT REFERENCES assignments(assignment_id) ON DELETE CASCADE,
+            solution VARCHAR(2000) NOT NULL,
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`)
     })
     .then(() => {
@@ -221,5 +237,19 @@ export const seed = ({ teachersData, studentsData, subjectsData, teachersSubject
             ])
         )
         return db.query(formattedAssignmentsData);
+    })
+    .then(() => {
+        const formattedSubmissionsData = format(
+            `INSERT INTO submissions
+            (student_id, assignment_id, solution, submitted_at)
+            VALUES %L RETURNING *;`,
+            submissionsData.submissions.map((submission: Submission) => [
+                submission.student_id,
+                submission.assignment_id,
+                submission.solution,
+                submission.submitted_at
+            ])
+        )
+        return db.query(formattedSubmissionsData);
     })
 }
