@@ -1,8 +1,13 @@
 const db = require("../../../dist/db/pool.js");
 import { Assignment } from "../../types/Assignment";
+import { Feedback } from "../../types/Feedback";
 
 type AssignmentProps = {
     rows: Assignment[]
+}
+
+type FeedbackProps = {
+    rows: Feedback[]
 }
 
 exports.fetchAssignments = () => {
@@ -39,4 +44,19 @@ exports.patchAssignment = (assignment_id: number, body: Assignment) => {
 
 exports.deleteAssignment = (assignment_id: number) => {
     return db.query(`DELETE FROM assignments WHERE assignment_id = $1`, [assignment_id])
+}
+
+exports.fetchFeedbackByAssignmentId = (assignment_id: number) => {
+    return db.query(`SELECT * FROM feedback JOIN submissions ON feedback.submission_id = submissions.submission_id WHERE assignment_id = $1`, [assignment_id])
+    .then((feedback: FeedbackProps) => {
+        return feedback.rows;
+    })
+}
+
+exports.postFeedback = (body: Feedback) => {
+    if(!body.submission_id || !body.feedback || !body.grade || !body.teacher_id || !body.student_id) return Promise.reject({ status: 400, msg: "Bad request" })
+    return db.query(`INSERT INTO feedback (submission_id, feedback, grade, teacher_id, student_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [body.submission_id, body.feedback, body.grade, body.teacher_id, body.student_id])
+    .then((feedback: FeedbackProps) => {
+        return feedback.rows[0];
+    })
 }
