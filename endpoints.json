@@ -406,5 +406,19 @@
                 "submitted_at": "2024-01-03T14:06:35.799Z"
             }
         }
+    },
+    "GET /api/students/:student_id/submissions/:submission_id": {
+        "description": "Returns a single submission for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "submission": {
+                "submission_id": 1,
+                "student_id": 1,
+                "assignment_id": 1,
+                "solution": "Test solution",
+                "submitted_at": "2024-01-03T14:06:35.799Z"
+            }
+        }
     }
 }

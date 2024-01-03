@@ -137,3 +137,11 @@ exports.postSubmission = (student_id: number, assignment_id: number, solution: s
         return result.rows[0];
     })
 }
+
+exports.fetchStudentSubmissionByID = (student_id: number, submission_id: number) => {
+    return db.query(`SELECT * FROM submissions WHERE student_id = $1 AND submission_id = $2;`, [student_id, submission_id])
+    .then((result: SubmissionProps) => {
+        if(result.rows.length === 0) return Promise.reject({ status: 404, msg: "Submission not found" })
+        return result.rows[0];
+    })
+}
