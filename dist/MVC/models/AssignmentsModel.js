@@ -34,3 +34,9 @@ exports.patchAssignment = (assignment_id, body) => {
 exports.deleteAssignment = (assignment_id) => {
     return db.query(`DELETE FROM assignments WHERE assignment_id = $1`, [assignment_id]);
 };
+exports.fetchFeedbackByAssignmentId = (assignment_id) => {
+    return db.query(`SELECT * FROM feedback JOIN submissions ON feedback.submission_id = submissions.submission_id WHERE assignment_id = $1`, [assignment_id])
+        .then((feedback) => {
+        return feedback.rows;
+    });
+};

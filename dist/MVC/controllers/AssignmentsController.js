@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment } = require("../models/AssignmentsModel");
+const { fetchAssignments, postSingleAssignment, fetchAssignmentById, patchAssignment, deleteAssignment, fetchFeedbackByAssignmentId } = require("../models/AssignmentsModel");
 exports.getAssignments = (req, res, next) => {
     fetchAssignments()
         .then((assignments) => {
@@ -47,6 +47,18 @@ exports.deleteAssignmentById = (req, res, next) => {
     })
         .then(() => {
         res.sendStatus(204);
+    })
+        .catch((err) => {
+        next(err);
+    });
+};
+exports.getFeedbackByAssignmentId = (req, res, next) => {
+    fetchAssignmentById(req.params.assignment_id)
+        .then(() => {
+        return fetchFeedbackByAssignmentId(req.params.assignment_id);
+    })
+        .then((feedback) => {
+        res.status(200).send({ feedback });
     })
         .catch((err) => {
         next(err);

@@ -9,3 +9,4 @@ exports.yearsData = require("./year");
 exports.studentsYearData = require("./students-year");
 exports.assignmentsData = require("./assignments");
 exports.submissionsData = require("./submissions");
+exports.feedbackData = require("./feedback");
