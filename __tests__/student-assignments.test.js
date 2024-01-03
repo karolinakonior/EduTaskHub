@@ -92,3 +92,90 @@ describe("GET /api/students/:student_id/submissions", () => {
             });
     })
 })
+
+describe("POST /api/students/:student_id/submissions", () => {
+    test("201: responds with the posted submission", () => {
+        return request(app)
+            .post("/api/students/3/submissions")
+            .send({
+                assignment_id: 2,
+                solution: "This is a test submission"
+            })
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.submission).toEqual({
+                    submission_id: 2,
+                    student_id: 3,
+                    assignment_id: 2,
+                    solution: "This is a test submission",
+                    submitted_at: expect.any(String)
+                });
+            });
+    })
+    test("200: responds with the posted submission when passed extra properties", () => {
+        return request(app)
+            .post("/api/students/3/submissions")
+            .send({
+                assignment_id: 2,
+                solution: "This is a test submission",
+                extra: "This is an extra property"
+            })
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.submission).toEqual({
+                    submission_id: 2,
+                    student_id: 3,
+                    assignment_id: 2,
+                    solution: "This is a test submission",
+                    submitted_at: expect.any(String)
+                });
+            });
+    })
+    test("404: responds with an error message when the specified student does not exist", () => {
+        return request(app)
+            .post("/api/students/100/submissions")
+            .send({
+                assignment_id: 2,
+                solution: "This is a test submission"
+            })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Student not found");
+            });
+    })
+    test("400: responds with an error message when the specified student_id is invalid", () => {
+        return request(app)
+            .post("/api/students/invalid/submissions")
+            .send({
+                assignment_id: 2,
+                solution: "This is a test submission"
+            })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            });
+    })
+    test("400: responds with an error message when the specified assignment_id is invalid", () => {
+        return request(app)
+            .post("/api/students/3/submissions")
+            .send({
+                assignment_id: "invalid",
+                solution: "This is a test submission"
+            })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            });
+    })
+    test("400: responds with an error message when submission object is invalid", () => {
+        return request(app)
+            .post("/api/students/3/submissions")
+            .send({
+                assignment_id: 100
+            })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            });
+    })
+})

@@ -129,3 +129,11 @@ exports.fetchStudentSubmissions = (student_id: number) => {
         return result.rows;
     })
 }
+
+exports.postSubmission = (student_id: number, assignment_id: number, solution: string) => {
+    if(!solution || !student_id || !assignment_id) return Promise.reject({ status: 400, msg: "Bad request" })
+    return db.query(`INSERT INTO submissions (student_id, assignment_id, solution) VALUES ($1, $2, $3) RETURNING *;`, [student_id, assignment_id, solution])
+    .then((result: SubmissionProps) => {
+        return result.rows[0];
+    })
+}

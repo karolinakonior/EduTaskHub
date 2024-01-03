@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentsRouter = void 0;
 exports.studentsRouter = require("express").Router();
-const { getStudents, getStudentById, postStudent, patchStudentById, deleteStudentById, getStudentSubjects, postStudentSubjects, deleteStudentSubjectById, getStudentYear, postStudentYear, deleteStudentYearById, getStudentAssignments, getStudentSubmissions } = require("../controllers/StudensController");
+const { getStudents, getStudentById, postStudent, patchStudentById, deleteStudentById, getStudentSubjects, postStudentSubjects, deleteStudentSubjectById, getStudentYear, postStudentYear, deleteStudentYearById, getStudentAssignments, getStudentSubmissions, postStudentSubmission } = require("../controllers/StudensController");
 exports.studentsRouter.route("/").get(getStudents).post(postStudent);
 exports.studentsRouter.route("/:student_id").get(getStudentById).patch(patchStudentById).delete(deleteStudentById);
 exports.studentsRouter.route("/:student_id/subjects").get(getStudentSubjects).post(postStudentSubjects);
@@ -10,4 +10,4 @@ exports.studentsRouter.route("/:student_id/subjects/:subject_id").delete(deleteS
 exports.studentsRouter.route("/:student_id/year").get(getStudentYear).post(postStudentYear);
 exports.studentsRouter.route("/:student_id/year/:year_id").delete(deleteStudentYearById);
 exports.studentsRouter.route("/:student_id/assignments").get(getStudentAssignments);
-exports.studentsRouter.route("/:student_id/submissions").get(getStudentSubmissions);
+exports.studentsRouter.route("/:student_id/submissions").get(getStudentSubmissions).post(postStudentSubmission);

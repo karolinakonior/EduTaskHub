@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements, fetchStudentSubmissions } = require("../models/StudentsModel");
+const { fetchStudents, fetchStudentById, postSingleUser, patchStudent, deleteStudent, fetchStudentSubjects, postNewStudentSubject, deleteStudentSubject, fetchStudentYear, postYear, deleteStudentYear, fetchStudentAssignements, fetchStudentSubmissions, postSubmission } = require("../models/StudentsModel");
 import { Student } from "../../db/data/test-data/students";
 import { Subject } from "../../db/data/test-data/subjects";
 import { Assignment } from "../../types/Assignment"
@@ -201,6 +201,19 @@ exports.getStudentSubmissions = (req: Request, res: Response, next: NextFunction
     })
     .then((submissions: Submission[]) => {
         res.status(200).send({ submissions });
+    })
+    .catch((err: Error) => {
+        next(err);
+    })
+}
+
+exports.postStudentSubmission = (req: Request, res: Response, next: NextFunction) => {
+    fetchStudentById(req.params.student_id)
+    .then(() => {
+        return postSubmission(req.params.student_id, req.body.assignment_id, req.body.solution)
+    })
+    .then((submission: Submission) => {
+        res.status(201).send({ submission });
     })
     .catch((err: Error) => {
         next(err);

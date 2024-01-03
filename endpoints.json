@@ -392,5 +392,19 @@
                 "submitted_at": "2024-01-03T14:06:35.799Z"
             }
         }
+    },
+    "POST /api/students/:student_id/submissions": {
+        "description": "Creates a single submission for a single student",
+        "queries": [],
+        "exampleRequest": {},
+        "exampleResponse": {
+            "submission": {
+                "solution": "Test solution",
+                "assignment_id": 2,
+                "submission_id": 2,
+                "student_id": 3,
+                "submitted_at": "2024-01-03T14:06:35.799Z"
+            }
+        }
     }
 }
