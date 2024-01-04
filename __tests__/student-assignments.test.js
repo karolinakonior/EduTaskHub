@@ -41,12 +41,12 @@ describe("GET /api/students/:student_id/assignments", () => {
                 expect(body.msg).toBe("Student not found");
             });
     })
-    test("400: responds with an error message when the specified student_id is invalid", () => {
+    test("404: responds with an error message when the specified student_id is invalid", () => {
         return request(app)
             .get("/api/students/invalid/assignments")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("Student not found");
             });
     })
 })
@@ -60,7 +60,7 @@ describe("GET /api/students/:student_id/submissions", () => {
                 expect(body.submissions).toHaveLength(1);
                 expect(body.submissions[0]).toEqual({
                     submission_id: 1,
-                    student_id: 1,
+                    student_id: "1",
                     assignment_id: 1,
                     solution: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                     submitted_at: expect.any(String)
@@ -83,12 +83,12 @@ describe("GET /api/students/:student_id/submissions", () => {
                 expect(body.msg).toBe("Student not found");
             });
     })
-    test("400: responds with an error message when the specified student_id is invalid", () => {
+    test("404: responds with an error message when the specified student_id is invalid", () => {
         return request(app)
             .get("/api/students/invalid/submissions")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("Student not found");
             });
     })
 })
@@ -105,7 +105,7 @@ describe("POST /api/students/:student_id/submissions", () => {
             .then(({ body }) => {
                 expect(body.submission).toEqual({
                     submission_id: 2,
-                    student_id: 3,
+                    student_id: "3",
                     assignment_id: 2,
                     solution: "This is a test submission",
                     submitted_at: expect.any(String)
@@ -124,7 +124,7 @@ describe("POST /api/students/:student_id/submissions", () => {
             .then(({ body }) => {
                 expect(body.submission).toEqual({
                     submission_id: 2,
-                    student_id: 3,
+                    student_id: "3",
                     assignment_id: 2,
                     solution: "This is a test submission",
                     submitted_at: expect.any(String)
@@ -143,16 +143,16 @@ describe("POST /api/students/:student_id/submissions", () => {
                 expect(body.msg).toBe("Student not found");
             });
     })
-    test("400: responds with an error message when the specified student_id is invalid", () => {
+    test("404: responds with an error message when the specified student_id is invalid", () => {
         return request(app)
             .post("/api/students/invalid/submissions")
             .send({
                 assignment_id: 2,
                 solution: "This is a test submission"
             })
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("Student not found");
             });
     })
     test("400: responds with an error message when the specified assignment_id is invalid", () => {
@@ -188,7 +188,7 @@ describe("GET /api/students/:student_id/submissions/:submission_id", () => {
             .then(({ body }) => {
                 expect(body.submission).toEqual({
                     submission_id: 1,
-                    student_id: 1,
+                    student_id: "1",
                     assignment_id: 1,
                     solution: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                     submitted_at: expect.any(String)
@@ -211,12 +211,12 @@ describe("GET /api/students/:student_id/submissions/:submission_id", () => {
                 expect(body.msg).toBe("Submission not found");
             });
     })
-    test("400: responds with an error message when the specified student_id is invalid", () => {
+    test("404: responds with an error message when the specified student_id is invalid", () => {
         return request(app)
             .get("/api/students/invalid/submissions/1")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("Student not found");
             });
     })
     test("400: responds with an error message when the specified submission_id is invalid", () => {

@@ -1,20 +1,20 @@
 You are now connected to database "eth_test" as user "karolinakonior".
- teacher_id | first_name | last_name |      email       | password 
-------------+------------+-----------+------------------+----------
-          1 | John       | Smith     | email1@gmail.com | password
-          2 | Jane       | Doe       | email2@gmail.com | password
-          3 | Bob        | Jones     | email3@gmail.com | password
-          4 | Mary       | Smith     | email4@gmail.com | password
-          5 | Joe        | Doe       | email5@gmail.com | password
+ teacher_id | first_name | last_name |      email       
+------------+------------+-----------+------------------
+          1 | John       | Smith     | email1@gmail.com
+          2 | Jane       | Doe       | email2@gmail.com
+          3 | Bob        | Jones     | email3@gmail.com
+          4 | Mary       | Smith     | email4@gmail.com
+          5 | Joe        | Doe       | email5@gmail.com
 (5 rows)
 
- student_id | first_name | last_name |       email        
-------------+------------+-----------+--------------------
-          1 | Kayleigh   | Smith     | student1@gmail.com
-          2 | Jane       | Sutton    | student2@gmail.com
-          3 | Bob        | Jones     | student3@gmail.com
-          4 | Mary       | Smith     | student4@gmail.com
-          5 | Joe        | Adamson   | student5@gmail.com
+ student_id | first_name | last_name |       email        | account_type 
+------------+------------+-----------+--------------------+--------------
+ 1          | Kayleigh   | Smith     | student1@gmail.com | student
+ 2          | Jane       | Sutton    | student2@gmail.com | student
+ 3          | Bob        | Jones     | student3@gmail.com | student
+ 4          | Mary       | Smith     | student4@gmail.com | student
+ 5          | Joe        | Adamson   | student5@gmail.com | student
 (5 rows)
 
  subject_id | subject_name 
@@ -35,19 +35,19 @@ You are now connected to database "eth_test" as user "karolinakonior".
 
  student_id | subject_id 
 ------------+------------
-          1 |          1
-          1 |          2
-          1 |          3
-          1 |          4
-          1 |          5
-          2 |          1
-          2 |          2
-          3 |          3
-          4 |          4
-          2 |          1
-          3 |          1
-          4 |          1
-          4 |          2
+ 1          |          1
+ 1          |          2
+ 1          |          3
+ 1          |          4
+ 1          |          5
+ 2          |          1
+ 2          |          2
+ 3          |          3
+ 4          |          4
+ 2          |          1
+ 3          |          1
+ 4          |          1
+ 4          |          2
 (13 rows)
 
  year_id | year 
@@ -58,10 +58,10 @@ You are now connected to database "eth_test" as user "karolinakonior".
 
  student_id | year_id 
 ------------+---------
-          1 |       1
-          2 |       1
-          3 |       2
-          4 |       2
+ 1          |       1
+ 2          |       1
+ 3          |       2
+ 4          |       2
 (4 rows)
 
  assignment_id |                                                       name                                                       |                                                                                    description                                                                                     |  due_date  | teacher_id | year_id | subject_id 
@@ -73,11 +73,11 @@ You are now connected to database "eth_test" as user "karolinakonior".
 
  submission_id | student_id | assignment_id |                                                                                                                                                                                                                           solution                                                                                                                                                                                                                            |      submitted_at       
 ---------------+------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------
-             1 |          1 |             1 | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. | 2024-01-04 11:01:00.702
+             1 | 1          |             1 | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. | 2024-01-04 19:56:49.489
 (1 row)
 
  feedback_id | submission_id | student_id |                                                          feedback                                                           | grade |    submitted_at     | teacher_id 
 -------------+---------------+------------+-----------------------------------------------------------------------------------------------------------------------------+-------+---------------------+------------
-           1 |             1 |          1 | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. | A     | 2024-01-01 00:00:00 |          1
+           1 |             1 | 1          | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. | A     | 2024-01-01 00:00:00 |          1
 (1 row)
 

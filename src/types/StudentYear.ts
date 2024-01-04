@@ -1,4 +1,4 @@
 export interface StudentYear {
-    student_id: number;
+    student_id: string;
     year_id: number;
 }

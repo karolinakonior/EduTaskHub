@@ -16,15 +16,17 @@ exports.fetchStudentById = (student_id) => {
     });
 };
 exports.postSingleUser = (student) => {
-    if (!student.first_name || !student.last_name || !student.email)
+    if (!student.first_name || !student.last_name || !student.email || !student.student_id || !student.account_type)
         return Promise.reject({ status: 400, msg: "Bad request" });
-    return db.query(`INSERT INTO students (first_name, last_name, email) VALUES ($1, $2, $3) RETURNING *;`, [student.first_name, student.last_name, student.email])
+    return db.query(`INSERT INTO students (first_name, last_name, email, student_id, account_type) VALUES ($1, $2, $3, $4, $5) RETURNING *;`, [student.first_name, student.last_name, student.email, student.student_id, student.account_type])
         .then((result) => {
         return result.rows[0];
     });
 };
 exports.patchStudent = (student_id, student) => {
-    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3 WHERE student_id = $4 RETURNING *;`, [student.first_name, student.last_name, student.email, student_id])
+    if (!student.first_name || !student.last_name || !student.email || !student_id || !student.account_type)
+        return Promise.reject({ status: 400, msg: "Bad request" });
+    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3, account_type = $4 WHERE student_id = $5 RETURNING *;`, [student.first_name, student.last_name, student.email, student.account_type, student_id])
         .then((result) => {
         return result.rows[0];
     });
