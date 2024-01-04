@@ -18,7 +18,7 @@ describe("GET /api/assignments/:assignment_id/feedback", () => {
                     expect.objectContaining({
                         feedback_id: 1,
                         submission_id: 1,
-                        student_id: 1,
+                        student_id: "1",
                         feedback: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                         submitted_at: expect.any(String),
                         grade: "A",
@@ -70,7 +70,7 @@ describe("POST /api/assignments/:assignment_id/feedback", () => {
                     expect.objectContaining({
                         feedback_id: 2,
                         submission_id: 1,
-                        student_id: 2,
+                        student_id: "2",
                         feedback: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                         submitted_at: expect.any(String),
                         grade: "A",
@@ -83,7 +83,7 @@ describe("POST /api/assignments/:assignment_id/feedback", () => {
         return request(app)
             .post("/api/assignments/one/feedback")
             .send({
-                student_id: 2,
+                student_id: "2",
                 feedback: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 grade: "A",
                 teacher_id: 1,
@@ -111,7 +111,7 @@ describe("POST /api/assignments/:assignment_id/feedback", () => {
         return request(app)
             .post("/api/assignments/100/feedback")
             .send({
-                student_id: 2,
+                student_id: "2",
                 feedback: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 grade: "A",
                 teacher_id: 1,
@@ -126,7 +126,7 @@ describe("POST /api/assignments/:assignment_id/feedback", () => {
         return request(app)
             .post("/api/assignments/1/feedback")
             .send({
-                student_id: 100,
+                student_id: "100",
                 feedback: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 grade: "A",
                 teacher_id: 1,

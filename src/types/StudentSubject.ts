@@ -1,4 +1,4 @@
 export interface StudentSubject {
-    student_id: number;
+    student_id: string;
     subject_id: number;
 }

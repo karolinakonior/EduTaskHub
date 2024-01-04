@@ -43,10 +43,11 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         return db.query(`CREATE TABLE students (
-            student_id SERIAL PRIMARY KEY,
+            student_id VARCHAR PRIMARY KEY,
             first_name VARCHAR(255) NOT NULL,
             last_name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL
+            email VARCHAR(255) UNIQUE NOT NULL,
+            account_type VARCHAR(255) NOT NULL
             );`);
     })
         .then(() => {
@@ -63,7 +64,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         return db.query(`CREATE TABLE students_subjects (
-            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            student_id VARCHAR REFERENCES students(student_id) ON DELETE CASCADE,
             subject_id INT REFERENCES subjects(subject_id) ON DELETE CASCADE
             );`);
     })
@@ -75,7 +76,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         return db.query(`CREATE TABLE students_year (
-            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            student_id VARCHAR REFERENCES students(student_id) ON DELETE CASCADE,
             year_id INT REFERENCES years(year_id) ON DELETE CASCADE
         );`);
     })
@@ -93,7 +94,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
         .then(() => {
         return db.query(`CREATE TABLE submissions (
             submission_id SERIAL PRIMARY KEY,
-            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            student_id VARCHAR REFERENCES students(student_id) ON DELETE CASCADE,
             assignment_id INT REFERENCES assignments(assignment_id) ON DELETE CASCADE,
             solution VARCHAR(2000) NOT NULL,
             submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -103,7 +104,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
         return db.query(`CREATE TABLE feedback (
             feedback_id SERIAL PRIMARY KEY,
             submission_id INT REFERENCES submissions(submission_id) ON DELETE CASCADE,
-            student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+            student_id VARCHAR REFERENCES students(student_id) ON DELETE CASCADE,
             feedback VARCHAR(2000) NOT NULL,
             grade VARCHAR(1) NOT NULL,
             submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -122,11 +123,13 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         const formattedStudentsData = format(`INSERT INTO students
-            (first_name, last_name, email)
+            (first_name, last_name, email, student_id, account_type)
             VALUES %L RETURNING *;`, studentsData.students.map((student) => [
             student.first_name,
             student.last_name,
-            student.email
+            student.email,
+            student.student_id,
+            student.account_type
         ]));
         return db.query(formattedStudentsData);
     })

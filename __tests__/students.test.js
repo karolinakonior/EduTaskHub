@@ -15,10 +15,11 @@ describe(" GET /api/students", () => {
             .then(({ body: { students } }) => {
                 expect(students).toHaveLength(5);
                 expect(students[0]).toEqual({
-                    student_id: 1,
+                    student_id: "1",
                     first_name: "Kayleigh",
                     last_name: "Smith",
-                    email: "student1@gmail.com"
+                    email: "student1@gmail.com",
+                    account_type: "student"
                 })
             })
     })
@@ -31,10 +32,11 @@ describe(" GET /api/students/:student_id", () => {
             .expect(200)
             .then(({ body: { student } }) => {
                 expect(student).toEqual({
-                    student_id: 1,
+                    student_id: "1",
                     first_name: "Kayleigh",
                     last_name: "Smith",
-                    email: "student1@gmail.com"
+                    email: "student1@gmail.com",
+                    account_type: "student"
                 })
             })
     })
@@ -46,12 +48,12 @@ describe(" GET /api/students/:student_id", () => {
                 expect(msg).toBe("Student not found")
             })
     })
-    test("400: responds with an error message when passed an invalid student_id", () => {
+    test("404: responds with an error message when passed an invalid student_id", () => {
         return request(app)
             .get("/api/students/invalid")
-            .expect(400)
+            .expect(404)
             .then(({ body: { msg } }) => {
-                expect(msg).toBe("Bad request")
+                expect(msg).toBe("Student not found")
             })
     })
 })
@@ -63,14 +65,17 @@ describe(" POST /api/students", () => {
             .send({
                 first_name: "Test",
                 last_name: "Student",
-                email: "testemail@gmail.com"
+                email: "testemail@gmail.com",
+                student_id: "6",
+                account_type: "student",
             })
             .expect(201)
             .then(({ body: { student } }) => {
-                expect(student.student_id).toBe(6);
+                expect(student.student_id).toBe("6");
                 expect(student.first_name).toBe("Test");
                 expect(student.last_name).toBe("Student");
-                expect(student.email).toBe("testemail@gmail.com")
+                expect(student.email).toBe("testemail@gmail.com");
+                expect(student.account_type).toBe("student");
             })
     })
     test("201: responds with the posted student object when passed a student object with extra keys", () => {
@@ -81,11 +86,13 @@ describe(" POST /api/students", () => {
                 last_name: "Student",
                 email: "student12@gmail.com",
                 password: "password",
+                student_id: "6",
+                account_type: "student",
                 extra: "key"
             })
             .expect(201)
             .then(({ body: { student } }) => {
-                expect(student.student_id).toBe(6);
+                expect(student.student_id).toBe("6");
                 expect(student.first_name).toBe("Test");
                 expect(student.last_name).toBe("Student");
                 expect(student.email).toBe("student12@gmail.com")
@@ -127,14 +134,16 @@ describe(" PATCH /api/students/:student_id", () => {
                 first_name: "Updated",
                 last_name: "Student",
                 email: "student1@gmail.com",
-                password: "password"
+                password: "password",
+                account_type: "student"
             })
             .expect(200)
             .then(({ body: { student } }) => {
-                expect(student.student_id).toBe(1);
+                expect(student.student_id).toBe("1");
                 expect(student.first_name).toBe("Updated");
                 expect(student.last_name).toBe("Student");
-                expect(student.email).toBe("student1@gmail.com")
+                expect(student.email).toBe("student1@gmail.com");
+                expect(student.account_type).toBe("student")
          })
     })
     test("200: responds with the updated student object when passed a student object with extra keys", () => {
@@ -145,14 +154,16 @@ describe(" PATCH /api/students/:student_id", () => {
                 last_name: "Student",
                 email: "student1@gmail.com",
                 password: "password",
+                account_type: "student",
                 extra: "key"
             })
             .expect(200)
             .then(({ body: { student } }) => {
-                expect(student.student_id).toBe(1);
+                expect(student.student_id).toBe("1");
                 expect(student.first_name).toBe("Updated");
                 expect(student.last_name).toBe("Student");
                 expect(student.email).toBe("student1@gmail.com")
+                expect(student.account_type).toBe("student")
             })
     })
     test("404: responds with an error message when passed a non-existent student_id", () => {
@@ -169,7 +180,7 @@ describe(" PATCH /api/students/:student_id", () => {
                 expect(msg).toBe("Student not found")
             })
     })
-    test("400: responds with an error message when passed an invalid student_id", () => {
+    test("404: responds with an error message when passed an invalid student_id", () => {
         return request(app)
             .patch("/api/students/invalid")
             .send({
@@ -178,9 +189,9 @@ describe(" PATCH /api/students/:student_id", () => {
                 email: "student1@gmail.com",
                 password: "password"
             })
-            .expect(400)
+            .expect(404)
             .then(({ body: { msg } }) => {
-                expect(msg).toBe("Bad request")
+                expect(msg).toBe("Student not found")
             })
     })
     test("400: responds with an error message when passed an invalid student object", () => {
@@ -211,12 +222,12 @@ describe(" DELETE /api/students/:student_id", () => {
                 expect(msg).toBe("Student not found")
             })
     })
-    test("400: responds with an error message when passed an invalid student_id", () => {
+    test("404: responds with an error message when passed an invalid student_id", () => {
         return request(app)
             .delete("/api/students/invalid")
-            .expect(400)
+            .expect(404)
             .then(({ body: { msg } }) => {
-                expect(msg).toBe("Bad request")
+                expect(msg).toBe("Student not found")
             })
     })
 })
@@ -250,12 +261,12 @@ describe("GET /api/students/:student_id/subjects", () => {
                 expect(msg).toBe("Student not found")
             })
     })
-    test("400: responds with an error message when passed an invalid student_id", () => {
+    test("404: responds with an error message when passed an invalid student_id", () => {
         return request(app)
             .get("/api/students/invalid/subjects")
-            .expect(400)
+            .expect(404)
             .then(({ body: { msg } }) => {
-                expect(msg).toBe("Bad request")
+                expect(msg).toBe("Student not found")
             })
     })
 })
@@ -269,7 +280,7 @@ describe("POST /api/students/:student_id/subjects", () => {
             })
             .expect(201)
             .then(({ body: { subject} }) => {
-                expect(subject.student_id).toBe(3);
+                expect(subject.student_id).toBe("3");
                 expect(subject.subject_id).toBe(1);
             })
     })
@@ -282,7 +293,7 @@ describe("POST /api/students/:student_id/subjects", () => {
             })
             .expect(201)
             .then(({ body: { subject } }) => {
-                expect(subject.student_id).toBe(3);
+                expect(subject.student_id).toBe("3");
                 expect(subject.subject_id).toBe(1);
             })
     })
@@ -344,7 +355,7 @@ describe("GET /api/students/:student_id/year", () => {
                 expect(year[0]).toEqual({
                     year_id: 1,
                     year: 12,
-                    student_id: 1
+                    student_id: "1"
                 })
             })
     })
@@ -364,12 +375,12 @@ describe("GET /api/students/:student_id/year", () => {
                 expect(msg).toBe("Student not found")
             })
     })
-    test("400: responds with an error message when passed an invalid student_id", () => {
+    test("404: responds with an error message when passed an invalid student_id", () => {
         return request(app)
             .get("/api/students/invalid/year")
-            .expect(400)
+            .expect(404)
             .then(({ body: { msg } }) => {
-                expect(msg).toBe("Bad request")
+                expect(msg).toBe("Student not found")
             })
     })
 })
@@ -383,7 +394,7 @@ describe("POST /api/students/:student_id/year", () => {
             })
             .expect(201)
             .then(({ body: { year } }) => {
-                expect(year.student_id).toBe(5);
+                expect(year.student_id).toBe("5");
                 expect(year.year_id).toBe(1);
             })
     })
@@ -396,7 +407,7 @@ describe("POST /api/students/:student_id/year", () => {
             })
             .expect(201)
             .then(({ body: { year } }) => {
-                expect(year.student_id).toBe(5);
+                expect(year.student_id).toBe("5");
                 expect(year.year_id).toBe(1);
             })
     })
