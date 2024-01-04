@@ -19,8 +19,7 @@ describe("GET /api/teachers", () => {
                         teacher_id: expect.any(Number),
                         first_name: expect.any(String),
                         last_name: expect.any(String),
-                        email: expect.any(String),
-                        password: expect.any(String)
+                        email: expect.any(String)
                     })
                 })
             })
@@ -37,8 +36,7 @@ describe("GET /api/teachers/:teacher_id", () => {
                     teacher_id: 1,
                     first_name: "John",
                     last_name: "Smith",
-                    email: "email1@gmail.com",
-                    password: "password"
+                    email: "email1@gmail.com"
                 })
             })
     })
@@ -71,8 +69,7 @@ describe("PATCH /api/teachers/:teacher_id", () => {
                     teacher_id: 1,
                     first_name: "John",
                     last_name: "Smith",
-                    email: "newemail@gmail.com",
-                    password: "password"
+                    email: "newemail@gmail.com"
                 })
             })
     })
@@ -86,8 +83,7 @@ describe("PATCH /api/teachers/:teacher_id", () => {
                     teacher_id: 1,
                     first_name: "John",
                     last_name: "Smith",
-                    email: "newemail@gmail.com",
-                    password: "password"
+                    email: "newemail@gmail.com"
                 })
             })
     })
@@ -140,8 +136,7 @@ describe("POST /api/teachers", () => {
                     teacher_id: 6,
                     first_name: "John",
                     last_name: "Smith",
-                    email: "testemail@gmail.com",
-                    password: expect.any(String)
+                    email: "testemail@gmail.com"
             })
             })
     })
@@ -155,8 +150,7 @@ describe("POST /api/teachers", () => {
                     teacher_id: 6,
                     first_name: "John",
                     last_name: "Smith",
-                    email: "testemail@gmail.com",
-                    password: expect.any(String)
+                    email: "testemail@gmail.com"
                 })
             })
     })

@@ -9,15 +9,13 @@
                     "teacher_id": 1,
                     "first_name": "John",
                     "last_name": "Smith",
-                    "email": "email1@gmail.com",
-                    "password": "password"
+                    "email": "email1@gmail.com"
                 },
                 {
                     "teacher_id": 2,
                     "first_name": "Jane",
                     "last_name": "Doe",
-                    "email": "email2@gmail.com",
-                    "password": "password"
+                    "email": "email2@gmail.com"
                 }
             ]
         }
@@ -31,8 +29,7 @@
                 "teacher_id": 1,
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "email1@gmail.com",
-                "password": "password"
+                "email": "email1@gmail.com"
             }
         }
     },
@@ -43,8 +40,7 @@
             "teacher": {
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "newemail@gmail.com",
-                "password": "password"
+                "email": "newemail@gmail.com"
             }
         },
         "exampleResponse": {
@@ -52,8 +48,7 @@
                 "teacher_id": 1,
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "newemail@gmail.com",
-                "password": "password"
+                "email": "newemail@gmail.com"
             }
         }
     },
@@ -64,8 +59,7 @@
             "teacher": {
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "testEmail@gmail.com",
-                "password": "hashedPassword"
+                "email": "testEmail@gmail.com"
             }
         },
         "exampleResponse": {
@@ -73,8 +67,7 @@
                 "teacher_id": 1,
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "testEmail@gmail.com",
-                "password": "hashedPassword"
+                "email": "testEmail@gmail.com"
             }
         }
     },
@@ -94,15 +87,13 @@
                     "student_id": 1,
                     "first_name": "John",
                     "last_name": "Smith",
-                    "email": "student1@gmail.com",
-                    "password": "password"
+                    "email": "student1@gmail.com"
                 },
                 {
                     "student_id": 2,
                     "first_name": "Jane",
                     "last_name": "Doe",
-                    "email": "email2@gmail.com",
-                    "password": "password"
+                    "email": "email2@gmail.com"
                 }
             ]
         }
@@ -115,8 +106,7 @@
                 "student_id": 1,
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "student1@gmail.com",
-                "password": "password"
+                "email": "student1@gmail.com"
             }
         },
         "exampleResponse": {
@@ -124,8 +114,7 @@
                 "student_id": 1,
                 "first_name": "John",
                 "last_name": "Smith",
-                "email": "student1@gmail.com",
-                "password": "password"
+                "email": "student1@gmail.com"
             }
         }
     },
