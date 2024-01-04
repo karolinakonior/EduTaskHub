@@ -47,8 +47,7 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
             student_id SERIAL PRIMARY KEY,
             first_name VARCHAR(255) NOT NULL,
             last_name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            email VARCHAR(255) UNIQUE NOT NULL
             );`);
     })
         .then(() => {
@@ -125,12 +124,11 @@ const seed = ({ teachersData, studentsData, subjectsData, teachersSubjectsData, 
     })
         .then(() => {
         const formattedStudentsData = format(`INSERT INTO students
-            (first_name, last_name, email, password)
+            (first_name, last_name, email)
             VALUES %L RETURNING *;`, studentsData.students.map((student) => [
             student.first_name,
             student.last_name,
-            student.email,
-            student.password
+            student.email
         ]));
         return db.query(formattedStudentsData);
     })

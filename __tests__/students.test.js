@@ -18,8 +18,7 @@ describe(" GET /api/students", () => {
                     student_id: 1,
                     first_name: "Kayleigh",
                     last_name: "Smith",
-                    email: "student1@gmail.com",
-                    password: "password"
+                    email: "student1@gmail.com"
                 })
             })
     })
@@ -35,8 +34,7 @@ describe(" GET /api/students/:student_id", () => {
                     student_id: 1,
                     first_name: "Kayleigh",
                     last_name: "Smith",
-                    email: "student1@gmail.com",
-                    password: "password"
+                    email: "student1@gmail.com"
                 })
             })
     })
@@ -65,8 +63,7 @@ describe(" POST /api/students", () => {
             .send({
                 first_name: "Test",
                 last_name: "Student",
-                email: "testemail@gmail.com",
-                password: "password"
+                email: "testemail@gmail.com"
             })
             .expect(201)
             .then(({ body: { student } }) => {
@@ -138,7 +135,6 @@ describe(" PATCH /api/students/:student_id", () => {
                 expect(student.first_name).toBe("Updated");
                 expect(student.last_name).toBe("Student");
                 expect(student.email).toBe("student1@gmail.com")
-                expect(student.password).toBe("password")
          })
     })
     test("200: responds with the updated student object when passed a student object with extra keys", () => {
@@ -157,7 +153,6 @@ describe(" PATCH /api/students/:student_id", () => {
                 expect(student.first_name).toBe("Updated");
                 expect(student.last_name).toBe("Student");
                 expect(student.email).toBe("student1@gmail.com")
-                expect(student.password).toBe("password")
             })
     })
     test("404: responds with an error message when passed a non-existent student_id", () => {

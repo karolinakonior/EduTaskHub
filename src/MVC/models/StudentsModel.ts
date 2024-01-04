@@ -3,7 +3,6 @@ import { type Submission } from "../../types/Submission";
 import { AssignmentProps } from "../../types/AssignmentProps";
 import { SubjectProps } from "../../types/SubjectProps";
 const db = require("../../../dist/db/pool.js");
-const bcrypt = require("bcrypt");
 
 type StudentsProps = {
     rows: Student[]
@@ -37,24 +36,16 @@ exports.fetchStudentById = (student_id: number) => {
 }
 
 exports.postSingleUser = (student: Student) => {
-    if(!student.first_name || !student.last_name || !student.email || !student.password) return Promise.reject({ status: 400, msg: "Bad request" })
+    if(!student.first_name || !student.last_name || !student.email) return Promise.reject({ status: 400, msg: "Bad request" })
 
-    return bcrypt
-    .genSalt(10)
-    .then((response: string) => {
-      const hashedPassword = bcrypt.hash(student.password, response);
-      return hashedPassword;
-    })
-    .then((hashedPassword: string) => {
-        return db.query(`INSERT INTO students (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *;`, [student.first_name, student.last_name, student.email, hashedPassword])
-    })
+    return db.query(`INSERT INTO students (first_name, last_name, email) VALUES ($1, $2, $3) RETURNING *;`, [student.first_name, student.last_name, student.email])
     .then((result: StudentsProps) => {
         return result.rows[0];
     })
 }
 
 exports.patchStudent = (student_id: number, student: Student) => {
-    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE student_id = $5 RETURNING *;`, [student.first_name, student.last_name, student.email, student.password, student_id])
+    return db.query(`UPDATE students SET first_name = $1, last_name = $2, email = $3 WHERE student_id = $4 RETURNING *;`, [student.first_name, student.last_name, student.email, student_id])
     .then((result: StudentsProps) => {
         return result.rows[0];
     })
