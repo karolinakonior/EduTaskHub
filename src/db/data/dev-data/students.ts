@@ -54,7 +54,7 @@ export const students: Student[] = [
         student_id: "8",
         first_name: "John",
         last_name: "Doe",
-        email: "student6@gmail.com",
+        email: "student8@gmail.com",
         account_type: "student"
     }
 ]

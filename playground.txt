@@ -8,14 +8,18 @@ You are now connected to database "eth_test" as user "karolinakonior".
           5 | Joe        | Doe       | email5@gmail.com
 (5 rows)
 
- student_id | first_name | last_name |       email        | account_type 
-------------+------------+-----------+--------------------+--------------
- 1          | Kayleigh   | Smith     | student1@gmail.com | student
- 2          | Jane       | Sutton    | student2@gmail.com | student
- 3          | Bob        | Jones     | student3@gmail.com | student
- 4          | Mary       | Smith     | student4@gmail.com | student
- 5          | Joe        | Adamson   | student5@gmail.com | student
-(5 rows)
+     student_id     | first_name | last_name |            email            | account_type 
+--------------------+------------+-----------+-----------------------------+--------------
+ 1                  | Kayleigh   | Smith     | student1@gmail.com          | student
+ 2                  | Jane       | Sutton    | student2@gmail.com          | student
+ 3                  | Bob        | Jones     | student3@gmail.com          | student
+ 4                  | Mary       | Smith     | student4@gmail.com          | student
+ 5                  | Joe        | Adamson   | student5@gmail.com          | student
+ VARCHAR            | Karolina   | konior    | heheeh@gmail.com            | student
+ hellostudent       | Karolina   | konior    | 12345@gmail.com             | student
+ 122hello_student_1 | Karolina   | konior    | 1hello_student@gmail.com    | student
+ hello_student_123  | Karolina   | konior    | hello_student_123@gmail.com | student
+(9 rows)
 
  subject_id | subject_name 
 ------------+--------------
@@ -73,7 +77,7 @@ You are now connected to database "eth_test" as user "karolinakonior".
 
  submission_id | student_id | assignment_id |                                                                                                                                                                                                                           solution                                                                                                                                                                                                                            |      submitted_at       
 ---------------+------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------
-             1 | 1          |             1 | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. | 2024-01-04 19:56:49.489
+             1 | 1          |             1 | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. | 2024-01-04 20:34:42.093
 (1 row)
 
  feedback_id | submission_id | student_id |                                                          feedback                                                           | grade |    submitted_at     | teacher_id 
