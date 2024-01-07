@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const testData = require("../test-data/index");
+const devData = require("../dev-data/index");
 const { seed } = require("./seed");
 const db = require("../../pool");
 const runSeed = () => {
     console.log("Seeding...");
-    return seed(testData).then(() => {
+    return seed(devData).then(() => {
         console.log("Data seeded successfully");
         db.end();
     });
