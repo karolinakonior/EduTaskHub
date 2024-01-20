@@ -18,7 +18,7 @@ describe("GET /api/assignments", () => {
                     assignment_id: 1,
                     name: 'The effect of the concentration of salt solution on the mass of potatoes',
                     description: 'Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.',
-                    due_date: "2020-11-07T00:00:00.000Z",
+                    due_date: "2020-11-06T23:00:00.000Z",
                     teacher_id: 1,
                     year_id: 1,
                     subject_id: 1
@@ -45,7 +45,7 @@ describe("POST /api/assignments", () => {
                     assignment_id: 4,
                     name: "Test Assignment",
                     description: "Test description",
-                    due_date: "2020-11-07T00:00:00.000Z",
+                    due_date: "2020-11-06T23:00:00.000Z",
                     teacher_id: 1,
                     year_id: 1,
                     subject_id: 1
@@ -143,7 +143,7 @@ describe("GET /api/assignments/:assignment_id", () => {
                     assignment_id: 1,
                     name: 'The effect of the concentration of salt solution on the mass of potatoes',
                     description: 'Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.',
-                    due_date: "2020-11-07T00:00:00.000Z",
+                    due_date: "2020-11-06T23:00:00.000Z",
                     teacher_id: 1,
                     year_id: 1,
                     subject_id: 1
@@ -186,7 +186,7 @@ describe("PATCH /api/assignments/:assignment_id", () => {
                 assignment_id: 1,
                 name: "Test Assignment",
                 description: "Test description",
-                due_date: "2020-11-07T00:00:00.000Z",
+                due_date: "2020-11-06T23:00:00.000Z",
                 teacher_id: 1,
                 year_id: 1,
                 subject_id: 1
