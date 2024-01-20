@@ -69,11 +69,13 @@ exports.deleteStudentYear = (student_id, year_id) => {
     return db.query(`DELETE FROM students_year WHERE student_id = $1 AND year_id = $2;`, [student_id, year_id]);
 };
 exports.fetchStudentAssignements = (student_id) => {
-    return db.query(`SELECT DISTINCT assignments.*
+    return db
+        .query(`SELECT DISTINCT assignments.*
     FROM assignments 
     JOIN students_subjects ON students_subjects.subject_id = assignments.subject_id 
     JOIN students_year ON students_year.year_id = assignments.year_id 
-    WHERE students_year.student_id = $1;`, [student_id])
+    LEFT JOIN submissions ON assignments.assignment_id = submissions.assignment_id
+    WHERE students_year.student_id = $1 AND students_subjects.student_id = $1 AND submissions.assignment_id IS NULL;;`, [student_id])
         .then((result) => {
         return result.rows;
     });
