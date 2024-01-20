@@ -74,8 +74,7 @@ exports.fetchStudentAssignements = (student_id) => {
     FROM assignments 
     JOIN students_subjects ON students_subjects.subject_id = assignments.subject_id 
     JOIN students_year ON students_year.year_id = assignments.year_id 
-    LEFT JOIN submissions ON assignments.assignment_id = submissions.assignment_id
-    WHERE students_year.student_id = $1 AND students_subjects.student_id = $1 AND submissions.assignment_id IS NULL;;`, [student_id])
+    WHERE students_year.student_id = $1 AND students_subjects.student_id = $1;`, [student_id])
         .then((result) => {
         return result.rows;
     });
