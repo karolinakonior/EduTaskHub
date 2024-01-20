@@ -13,7 +13,16 @@ describe("GET /api/students/:student_id/assignments", () => {
             .get("/api/students/1/assignments")
             .expect(200)
             .then(({ body }) => {
-                expect(body.assignments).toHaveLength(0);
+                expect(body.assignments).toHaveLength(1);
+                expect(body.assignments[0]).toEqual({
+                    assignment_id: 1,
+                    name: 'The effect of the concentration of salt solution on the mass of potatoes',
+                    description: 'Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.',
+                    due_date: "2020-11-06T23:00:00.000Z",
+                    teacher_id: 1,
+                    year_id: 1,
+                    subject_id: 1
+                });
             });
     })
     test("200: responds with an empty array when the specified student has no assignments", () => {
