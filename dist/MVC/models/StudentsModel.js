@@ -94,7 +94,12 @@ exports.postSubmission = (student_id, assignment_id, solution) => {
     });
 };
 exports.fetchStudentSubmissionByID = (student_id, submission_id) => {
-    return db.query(`SELECT * FROM submissions WHERE student_id = $1 AND submission_id = $2;`, [student_id, submission_id])
+    return db
+        .query(`SELECT submissions.submission_id, submissions.student_id, submissions.assignment_id, submissions.submitted_at, submissions.solution, assignments.name, assignments.description, subjects.subject_name, assignments.teacher_id
+    FROM submissions
+    JOIN assignments ON submissions.assignment_id = assignments.assignment_id
+    JOIN subjects ON assignments.subject_id = subjects.subject_id
+    WHERE student_id = $1 AND submission_id = $2;`, [student_id, submission_id])
         .then((result) => {
         if (result.rows.length === 0)
             return Promise.reject({ status: 404, msg: "Submission not found" });

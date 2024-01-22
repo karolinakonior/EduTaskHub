@@ -190,6 +190,10 @@ describe("GET /api/students/:student_id/submissions/:submission_id", () => {
                     submission_id: 1,
                     student_id: "1",
                     assignment_id: 1,
+                    description: "Write an essay on the effect of the concentration of salt solution on the mass of potatoes. Include a hypothesis, method, results, discussion and conclusion.",
+                    subject_name: "Biology",
+                    teacher_id: 1,
+                    name: "The effect of the concentration of salt solution on the mass of potatoes",
                     solution: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                     submitted_at: expect.any(String)
                 });
