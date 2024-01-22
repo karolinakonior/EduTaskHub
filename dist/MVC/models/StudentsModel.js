@@ -80,7 +80,12 @@ exports.fetchStudentAssignements = (student_id) => {
     });
 };
 exports.fetchStudentSubmissions = (student_id) => {
-    return db.query(`SELECT * FROM submissions WHERE student_id = $1;`, [student_id])
+    return db
+        .query(`SELECT submissions.submission_id, submissions.student_id, submissions.assignment_id, submissions.submitted_at, submissions.solution, assignments.name, assignments.description, subjects.subject_name, assignments.teacher_id
+    FROM submissions
+    JOIN assignments ON submissions.assignment_id = assignments.assignment_id
+    JOIN subjects ON assignments.subject_id = subjects.subject_id
+    WHERE student_id = $1`, [student_id])
         .then((result) => {
         return result.rows;
     });
